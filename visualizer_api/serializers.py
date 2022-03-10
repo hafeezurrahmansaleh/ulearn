@@ -50,6 +50,10 @@ class DumpDataSerializer(serializers.ModelSerializer):
         source="fifth_technicalsector.value",
         read_only=True
     )
+    refugee_settlement = serializers.CharField(
+            source="refugee_settlement.value",
+            read_only=True
+        )
 
 
     class Meta:

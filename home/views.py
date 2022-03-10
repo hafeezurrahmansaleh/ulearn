@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -7,6 +7,57 @@ from .forms import ImportDataForm
 from .models import *
 from django import forms
 import django_excel as excel
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+def user_login(request):
+    url = request.GET.get("next", '')
+    print('url' + url)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        print(User.objects.filter(username=username, password=password).values('username'))
+        print(username)
+        try:
+            get_user = User.objects.get(username=username)
+        except:
+            get_user = None
+        if get_user is not None:
+            # user = User.objects.get(username=username, password=password)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                if url:
+                    return HttpResponseRedirect(url)
+                else:
+                    return redirect('/vendor/myaccount/')
+            else:
+                messages.error(request, 'Password is incorrect')
+                return render(request, 'login.html', {'url': url})
+
+        else:
+            messages.error(request, 'User not found!')
+            return render(request, 'login.html', {'url': url})
+
+    else:
+        return render(request, 'login.html', {'url': url})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('user_login')
+
+
+def myaccount(request):
+    if request.user.is_vendor:
+        url = '/vendor/'
+    elif request.user.is_admin:
+        url = '/superadmin/'
+    else:
+        url = '/'
+    return redirect(url)
 
 class IndexView(View):
     def get(self, request):

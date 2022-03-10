@@ -44,8 +44,8 @@ class Settlement(models.Model):
 class Dump(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True,blank=True)
     org_code = models.CharField(max_length = 250,db_column='ORG_CODE', null=True, blank=True)  # Field name made lowercase.
-    organisation_name = models.CharField(max_length = 250, null=True, blank=True)  # Field name made lowercase.
-    organisation_name2 = models.CharField(max_length = 250, null=True, blank=True)  # Field name made lowercase.
+    organisation_name = models.TextField(max_length = 1000, null=True, blank=True)  # Field name made lowercase.
+    organisation_name2 = models.TextField(max_length = 1000, null=True, blank=True)  # Field name made lowercase.
     functionality = models.CharField(max_length = 250,null=True, blank=True)  # Field name made lowercase.
     website = models.CharField(max_length = 250, null=True, blank=True)  # Field name made lowercase.
     org_type = models.ForeignKey(OrgType, on_delete=models.CASCADE, null=True, blank=True, related_name='org_type')  # Field name made lowercase.
