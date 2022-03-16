@@ -14,78 +14,76 @@ class OrgTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class GeographicScopeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GeographicScope
-        fields = '__all__'
+# class GeographicScopeSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = GeographicScope
+#         fields = '__all__'
 
 
-class DumpDataSerializer(serializers.ModelSerializer):
+class CleanDataSerializer(serializers.ModelSerializer):
     # cover_image = Base64ImageField(required=True)
     org_type = serializers.CharField(
         source="org_type.value",
         read_only=True
     )
-    geographic_scope = serializers.CharField(
-        source="geographic_scope.value",
+    # geographic_scope = serializers.CharField(
+    #     source="geographic_scope.value",
+    #     read_only=True
+    # )
+    org_primarytechnicalarea = serializers.CharField(
+        source="org_secondarytechnicalarea1.value",
         read_only=True
     )
-    primary_technicalsector = serializers.CharField(
-        source="primary_technicalsector.value",
+    org_secondarytechnicalarea1 = serializers.CharField(
+        source="org_secondarytechnicalarea1.value",
         read_only=True
     )
-    secondary_technicalsector = serializers.CharField(
-        source="secondary_technicalsector.value",
+    org_secondarytechnicalarea2 = serializers.CharField(
+        source="org_secondarytechnicalarea2.value",
         read_only=True
     )
-    third_technicalsector = serializers.CharField(
-        source="third_technicalsector.value",
-        read_only=True
-    )
-    fourth_technicalsector = serializers.CharField(
-        source="fourth_technicalsector.value",
-        read_only=True
-    )
-    fifth_technicalsector = serializers.CharField(
-        source="fifth_technicalsector.value",
-        read_only=True
-    )
+
     refugee_settlement = serializers.CharField(
             source="refugee_settlement.value",
             read_only=True
         )
+    org_targetdemographic = serializers.CharField(
+                source="org_targetdemographic.value",
+                read_only=True
+            )
 
 
     class Meta:
-        model = Dump
+        model = CleanData
         fields = (
             "id",
+            # "org_code",
+            "org_name",
+            "org_acronym",
+            "founding_year",
+            "years_active",
             "org_type",
-            "geographic_scope",
-            "org_code",
-            "organisation_name",
-            "functionality",
-            "website",
-            "eco_system_tag",
-            "eco_map_sector",
-            "eco_map_subsector",
-            "total_number_of_interactions_ril",
-            "ulearn_subcategory",
-            "date_of_last_contact",
-            "status_remarks",
-            "primary_contact_name",
-            "role",
-            "email",
-            "phone",
-            "optional_contact",
-            "location_base",
-            "district",
+            "org_legaltype",
             "refugee_settlement",
-            "primary_technicalsector",
-            "secondary_technicalsector",
-            "third_technicalsector",
-            "fourth_technicalsector",
-            "fifth_technicalsector"
+            "refugee_zone",
+            "org_offices",
+            "org_primarytechnicalarea",
+            "org_activities",
+            "org_secondarytechnicalarea1",
+            "org_secondarytechnicalarea2",
+            "org_targetgroup",
+            "org_targetdemographic",
+            "org_primarycontact",
+            "org_email",
+            "org_phone",
+            "org_website",
+            "org_facebook",
+            "org_twitter",
+            "org_logo",
+            "contact_name",
+            "contact_role",
+            "contact_email",
+            "contact_phone",
         )
         # fields = '__all__'
         read_only_fields = (
@@ -94,3 +92,11 @@ class DumpDataSerializer(serializers.ModelSerializer):
             'created',
             'updated'
         )
+
+
+# data = {
+#     "settlement": ['Adjumani','BidiBi'],
+#     "type_of_org":['LNGO','Private Sector'],
+#     ...............
+#     ...............
+# }

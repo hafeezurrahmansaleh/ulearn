@@ -51,7 +51,7 @@
         <!--logo end-->
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="/login">Logout</a></li>
+                <li><a class="logout" href="/logout/">Logout</a></li>
             </ul>
         </div>
     </header>
@@ -67,11 +67,11 @@
                 <p class="centered"><a href="#"><img src="{% static 'img/usr.png' %}" class="img-circle"
                                                      width="80"></a>
                 </p>
-                <h5 class="centered">Asif Khan Shakir</h5>
-                <li class="mt">
-                    <a href="\">
+                <h5 class="centered">Admin Portal</h5>
+                <li class="mt active">
+                    <a href="\" class="active">
                         <i class="fa fa-th"></i>
-                        <span>Raw Data</span>
+                        <span>Import Data</span>
                     </a>
                 </li>
                 <li class="">
@@ -81,9 +81,9 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="\import-data\">
+                    <a href="\raw-data\" c>
                         <i class="fa fa-th"></i>
-                        <span>Import Data</span>
+                        <span>Raw Data</span>
                     </a>
                 </li>
             </ul>
@@ -102,7 +102,7 @@
             <div class="row ">
                 <div class="col-lg-12">
                     {#                    <h4><i class="fa fa-angle-right"></i> Input Data</h4>#}
-                    <div class="form-panel">
+                    <div class="form-panel" style="margin: 30px !important; margin-top: 60px !important; padding: 50px !important;">
                         <div class=" form">
                             <div class="cmxform form-horizontal style-form" style="padding: 15px" id="commentForm"
                                   method="get" action="">
@@ -125,7 +125,7 @@
                                                 <span class="btn btn-theme02 btn-file" style="min-width: 220px">
                                                   <span class="fileupload-new"><i class="fa fa-paperclip"></i> Select File</span>
                                                 <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
-                                                <input type="file" name="excel_file" class="default"/>
+                                                <input type="file" name="excel_file" required class="default"/>
                                                 </span>
                                                             <a href="advanced_form_components.html#"
                                                                class="btn btn-theme04 fileupload-exists"
@@ -142,46 +142,46 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p class="text-center">------------------------------ or
-                                        ------------------------------ </p>
+{#                                    <p class="text-center">------------------------------ or#}
+{#                                        ------------------------------ </p>#}
                                 </div>
                                 <br>
 
 {#                                form#}
-                                <form id="form-data" method="post" action="/import-data/">
-                                    {% csrf_token %}
-                                    <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="cname" class="control-label col-lg-3">ORG CODE</label>
-                                        <div class="col-lg-9">
+{#                                <form id="form-data" method="post" action="/import-data/">#}
+{#                                    {% csrf_token %}#}
+{#                                    <div class="row">#}
+{#                                    <div class="form-group col-md-6">#}
+{#                                        <label for="cname" class="control-label col-lg-3">ORG CODE</label>#}
+{#                                        <div class="col-lg-9">#}
 {#                                            <input class=" form-control" name="orgcode" minlength="2"#}
 {#                                                   type="text"#}
 {#                                                   required/>#}
-                                            {{ form.org_code }}
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="cemail" class="control-label col-lg-3">Organisation Name2</label>
-                                        <div class="col-lg-9">
+{#                                            {{ form.org_code }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="form-group col-md-6">#}
+{#                                        <label for="cemail" class="control-label col-lg-3">Organisation Name2</label>#}
+{#                                        <div class="col-lg-9">#}
 {#                                            <input class="form-control " id="orgname2" type="text" name="orgname2"#}
 {#                                                   required/>#}
-                                            {{ form.organisation_name }}
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <label for="website" class="control-label col-lg-3">Website</label>
-                                        <div class="col-lg-9">
+{#                                            {{ form.organisation_name }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                    <div class="row">#}
+{#                                    <div class="form-group col-md-6">#}
+{#                                        <label for="website" class="control-label col-lg-3">Website</label>#}
+{#                                        <div class="col-lg-9">#}
 {#                                            <input class=" form-control" id="website" name="website" minlength="2"#}
 {#                                                   type="text"#}
 {#                                                   required/>#}
-                                            {{ form.website }}
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="orgtype" class="control-label col-lg-3">Org Type</label>
-                                        <div class="col-lg-9">
+{#                                            {{ form.website }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="form-group col-md-6">#}
+{#                                        <label for="orgtype" class="control-label col-lg-3">Org Type</label>#}
+{#                                        <div class="col-lg-9">#}
 {#                                            <select class="form-control">#}
 {#                                                <option>1</option>#}
 {#                                                <option>2</option>#}
@@ -189,14 +189,14 @@
 {#                                                <option>4</option>#}
 {#                                                <option>5</option>#}
 {#                                            </select>#}
-                                            {{ form.org_type }}
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="orgtype" class="control-label col-lg-3">Intl./Natl./Local</label>
-                                            <div class="col-lg-9">
+{#                                            {{ form.org_type }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="orgtype" class="control-label col-lg-3">Intl./Natl./Local</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -204,13 +204,13 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.geographic_scope }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Primary technical area
-                                                1</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.geographic_scope }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Primary technical area#}
+{#                                                1</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -218,15 +218,15 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.primary_technicalsector }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Other technical
-                                                area(s) 2</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.primary_technicalsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Other technical#}
+{#                                                area(s) 2</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -234,13 +234,13 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.secondary_technicalsector }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Other technical area(s)
-                                                3</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.secondary_technicalsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Other technical area(s)#}
+{#                                                3</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -248,15 +248,15 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.third_technicalsector }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Other technical area(s) 4
-                                                </label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.third_technicalsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Other technical area(s) 4#}
+{#                                                </label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -264,13 +264,13 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.fourth_technicalsector }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Other technical area(s)
-                                                5</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.fourth_technicalsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Other technical area(s)#}
+{#                                                5</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <select class="form-control">#}
 {#                                                    <option>1</option>#}
 {#                                                    <option>2</option>#}
@@ -278,170 +278,170 @@
 {#                                                    <option>4</option>#}
 {#                                                    <option>5</option>#}
 {#                                                </select>#}
-                                                {{ form.fifth_technicalsector }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">TAG_UG Ecosystem Map </label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.fifth_technicalsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">TAG_UG Ecosystem Map </label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" name="name" minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.eco_system_tag }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Ecosystem Map Sector</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.eco_system_tag }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Ecosystem Map Sector</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.eco_map_sector }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Ecosystem Map Subsector</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.eco_map_sector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Ecosystem Map Subsector</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" name="name" minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.eco_map_subsector }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">ULEARN Subcategory</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.eco_map_subsector }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">ULEARN Subcategory</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.ulearn_subcategory }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-md-3">Date of last contact</label>
-                                            <div class="col-md-9">
+{#                                                {{ form.ulearn_subcategory }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-md-3">Date of last contact</label>#}
+{#                                            <div class="col-md-9">#}
 {#                                                <input class="form-control form-control-inline input-medium default-date-picker"#}
 {#                                                       size="16" type="text" value="">#}
-                                                {{ form.date_of_last_contact }}
+{#                                                {{ form.date_of_last_contact }}#}
 {#                                                <span class="input-group-btn add-on col-md-1 "#}
 {#                                                      style="margin-right: 0 !important;">#}
 {#                                                    <button disabled class="btn btn-theme" type="button"><i#}
 {#                                                            class="fa fa-calendar"></i></button>#}
 {#                                                </span>#}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Status /Next step</label>
-                                            <div class="col-lg-9">
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Status /Next step</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.status_remarks }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Primary Contact Name</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.status_remarks }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Primary Contact Name</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" name="name" minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.primary_contact_name }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Role</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.primary_contact_name }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Role</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.role }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Email</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.role }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Email</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" type="email" name="name"#}
 {#                                                       minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.email }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Phone</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.email }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Phone</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.phone }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Other contact info</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.phone }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Other contact info</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" name="name" minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.optional_contact }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Disctrict(s) </label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.optional_contact }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Disctrict(s) </label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.district }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-6">
-                                            <label for="cname" class="control-label col-lg-3">Covered Refugee Settlement(s)
-                                                covered</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.district }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cname" class="control-label col-lg-3">Covered Refugee Settlement(s)#}
+{#                                                covered</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class=" form-control" id="cname" name="name" minlength="2"#}
 {#                                                       type="text"#}
 {#                                                       required/>#}
-                                                {{ form.refugee_settlement }}
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="cemail" class="control-label col-lg-3">Settlement where data was
-                                                collected from</label>
-                                            <div class="col-lg-9">
+{#                                                {{ form.refugee_settlement }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="form-group col-md-6">#}
+{#                                            <label for="cemail" class="control-label col-lg-3">Settlement where data was#}
+{#                                                collected from</label>#}
+{#                                            <div class="col-lg-9">#}
 {#                                                <input class="form-control " id="cemail" name="email"#}
 {#                                                       required/>#}
-                                                {{ form.location_base }}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <label for="ccomment" class="control-label col-lg-2">Location of Base</label>
-                                            <div class="col-lg-10">
-                                                <textarea class="form-control col-lg-9" id="ccomment" name="comment"
-                                                          required></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-
+{#                                                {{ form.location_base }}#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                    <div class="row">#}
+{#                                        <div class="form-group col-md-12">#}
+{#                                            <label for="ccomment" class="control-label col-lg-2">Location of Base</label>#}
+{#                                            <div class="col-lg-10">#}
+{#                                                <textarea class="form-control col-lg-9" id="ccomment" name="comment"#}
+{#                                                          required></textarea>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="form-group">#}
+{##}
 {#                                    {{ form.as_p }}#}
-                                    <div class=" col-lg-12 text-center">
-                                        <button class="btn btn-theme" style="min-width: 100px" type="submit">Save
-                                        </button>
-                                        <button class="btn btn-theme04" type="button">Cancel</button>
-                                    </div>
-                                </div>
-                                </form>
+{#                                    <div class=" col-lg-12 text-center">#}
+{#                                        <button class="btn btn-theme" style="min-width: 100px" type="submit">Save#}
+{#                                        </button>#}
+{#                                        <button class="btn btn-theme04" type="button">Cancel</button>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                </form>#}
                             </div>
                         </div>
                     </div>
@@ -456,25 +456,25 @@
     <!-- /MAIN CONTENT -->
     <!--main content end-->
     <!--footer start-->
-    <footer class="site-footer">
-        <div class="text-center">
-            <p><br><br>
-                <strong> </strong>
-            </p>
-            <div class="credits">
-                <!--
-                  You are NOT allowed to delete the credit link to TemplateMag with free version.
-                  You can delete the credit link only if you bought the pro version.
-                  Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/
-                  Licensing information: https://templatemag.com/license/
-                -->
-                <a href="#"></a>
-            </div>
-            <a href="#" class="go-top">
-                <i class="fa fa-angle-up"></i>
-            </a>
-        </div>
-    </footer>
+{#    <footer class="site-footer">#}
+{#        <div class="text-center">#}
+{#            <p><br><br>#}
+{#                <strong> </strong>#}
+{#            </p>#}
+{#            <div class="credits">#}
+{#                <!--#}
+{#                  You are NOT allowed to delete the credit link to TemplateMag with free version.#}
+{#                  You can delete the credit link only if you bought the pro version.#}
+{#                  Buy the pro version with working PHP/AJAX contact form: https://templatemag.com/dashio-bootstrap-admin-template/#}
+{#                  Licensing information: https://templatemag.com/license/#}
+{#                -->#}
+{#                <a href="#"></a>#}
+{#            </div>#}
+{#            <a href="#" class="go-top">#}
+{#                <i class="fa fa-angle-up"></i>#}
+{#            </a>#}
+{#        </div>#}
+{#    </footer>#}
     <!--footer end-->
 </section>
 <!-- js placed at the end of the document so the pages load faster -->

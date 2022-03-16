@@ -18,7 +18,11 @@ from django.template.defaulttags import url
 from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 
+import home.views
+
 urlpatterns = [
+    path('admin/login/', home.views.user_login),
+    path('admin/logout/', home.views.user_logout),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('api/v1/', include('visualizer_api.urls')),

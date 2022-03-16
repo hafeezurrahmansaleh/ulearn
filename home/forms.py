@@ -5,12 +5,35 @@ from .models import Dump
 class ImportDataForm(forms.ModelForm):
     class Meta:
         model = Dump
-        fields = ('org_code', 'organisation_name', 'website', 'org_type', 'geographic_scope', 'primary_technicalsector',
-                  'secondary_technicalsector', 'third_technicalsector', 'fourth_technicalsector',
-                  'fifth_technicalsector',
-                  'eco_system_tag', 'eco_map_sector', 'eco_map_subsector', 'number_of_convener', 'ulearn_subcategory',
-                  'date_of_last_contact', 'primary_contact_name', 'phone', 'status_remarks', 'role', 'email',
-                  'optional_contact', 'district', 'refugee_settlement', 'location_base')
+        fields = ("org_name",
+            "org_acronym",
+            "founding_year",
+            "years_active",
+            "org_type",
+            "org_legaltype",
+            "refugee_settlement",
+            "refugee_zone",
+            "org_offices",
+            "org_primarytechnicalarea",
+            "org_activities",
+            "org_secondarytechnicalarea1",
+            "org_secondarytechnicalarea2",
+            "org_targetgroup",
+            "org_targetdemographic",
+            "org_primarycontact",
+            "org_email",
+            "org_phone",
+            "org_website",
+            "org_facebook",
+            "org_twitter",
+            "org_logo",
+            "contact_name",
+            "contact_role",
+            "contact_email",
+            "contact_phone")
+
+
+
 
         # date_of_last_contact = forms.DateField(widget=forms.DateInput(
         #     attrs={

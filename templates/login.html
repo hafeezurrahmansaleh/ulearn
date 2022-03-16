@@ -35,7 +35,7 @@
       *********************************************************************************************************************************************************** -->
   <div id="login-page">
     <div class="container">
-      <form class="form-login" action="/">
+      <form class="form-login" action="/login/" method="post">{% csrf_token %}
         <h2 class="form-login-heading">sign in now</h2>
         <div class="login-wrap">
           <input type="text" class="form-control" placeholder="Username"  name="username"autofocus>
@@ -55,12 +55,12 @@
 {#            <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>#}
 {#            <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button>#}
 {#          </div>#}
-          <div class="registration">
-            Don't have an account yet?<br/>
-            <a class="" href="#">
-              Create an account
-              </a>
-          </div>
+{#          <div class="registration">#}
+{#            Don't have an account yet?<br/>#}
+{#            <a class="" href="#">#}
+{#              Create an account#}
+{#              </a>#}
+{#          </div>#}
         </div>
         <!-- Modal -->
         <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">

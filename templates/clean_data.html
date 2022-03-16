@@ -12,6 +12,9 @@
     <!-- Favicons -->
     <link href="{% static 'img/favicon.png' %}" rel="icon">
     <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <link rel="icon" href="https://ulearn-uganda.org/wp-content/uploads/2021/09/cropped-logo-tansparant-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://ulearn-uganda.org/wp-content/uploads/2021/09/cropped-logo-tansparant-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="https://ulearn-uganda.org/wp-content/uploads/2021/09/cropped-logo-tansparant-180x180.png">
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -49,7 +52,7 @@
         <!--logo end-->
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="logout" href="/login">Logout</a></li>
+                <li><a class="logout" href="/logout/">Logout</a></li>
             </ul>
         </div>
     </header>
@@ -65,23 +68,23 @@
                 <p class="centered"><a href="#"><img src="{% static 'img/usr.png' %}" class="img-circle"
                                                                 width="80"></a>
                 </p>
-                <h5 class="centered">Asif Khan Shakir</h5>
-                <li class="mt">
-                    <a href="\">
+                <h5 class="centered">Admin Portal</h5>
+                <li class="mt ">
+                    <a href="\" >
                         <i class="fa fa-th"></i>
-                        <span>Raw Data</span>
+                        <span>Import Data</span>
                     </a>
                 </li>
                 <li class="">
-                    <a href="\clean-data\">
-                        <i class="fa fa-th"></i>
+                    <a href="\clean-data\" class="active">
+                        <i class="fa fa-th" ></i>
                         <span>Ready Data</span>
                     </a>
                 </li>
                 <li class="">
-                    <a href="\import-data\">
+                    <a href="\raw-data\">
                         <i class="fa fa-th"></i>
-                        <span>Import Data</span>
+                        <span>Raw Data</span>
                     </a>
                 </li>
             </ul>
@@ -104,66 +107,65 @@
                                id="hidden-table-info">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>ORG_CODE</th>
-                                <th>Organisation_Name</th>
-                                <th>Organisation_Name2</th>
-                                <th>Website</th>
-                                <th>Org_Type</th>
-                                <th>geographic_scope</th>
-                                <th>Primary_TechnicalSector</th>
-                                <th>Secondary_TechnicalSector</th>
-                                <th>Third_TechnicalSector</th>
-                                <th>Eco_System_tag</th>
-                                <th>Eco_Map_Sector</th>
-                                <th>Eco_Map_SubSector</th>
-{#                                <th>Number_of_Convener</th>#}
-{#                                <th>Number_of_Challenges</th>#}
-{#                                <th>Number_of_Innovations</th>#}
-{#                                <th>Number_of_referrals</th>#}
-{#                                <th>Number_of_Matchmaker</th>#}
-{#                                <th>Number_of_Matchmaker_solution_Received</th>#}
-{#                                <th>Number_of_projects_RIL</th>#}
-                                <th>Total_number_of_interactions_RIL</th>
-                                <th>Ulearn_Subcategory</th>
-                                <th>Date_of_last_contact</th>
-                                <th>Status_Remarks</th>
-                                <th>Primary_Contact_Name</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Optional_Contact</th>
-                                <th>Location_Base</th>
-                                <th>District</th>
+                                <th>ID</th>
+                                <th>org_name</th>
+                                <th>org_acronym</th>
+                                <th>founding_year</th>
+                                <th>years_active</th>
+                                <th>org_type</th>
+                                <th>org_legaltype</th>
+                                <th>refugee_settlement</th>
+                                <th>refugee_zone</th>
+                                <th>org_offices</th>
+                                <th>org_primarytechnicalarea</th>
+                                <th>org_activities</th>
+                                <th>org_secondarytechnicalarea1</th>
+                                <th>org_secondarytechnicalarea2</th>
+                                <th>org_targetgroup</th>
+                                <th>org_targetdemographic</th>
+                                <th>org_primarycontact</th>
+                                <th>org_email</th>
+                                <th>org_phone</th>
+                                <th>org_website</th>
+                                <th>org_facebook</th>
+                                <th>org_twitter</th>
+                                <th>org_logo</th>
+                                <th>contact_name</th>
+                                <th>contact_role</th>
+                                <th>contact_email</th>
+                                <th>contact_phone</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for d in data %}
                                 <tr class="">
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ d.org_code }}</td>
-                                <td>{{ d.organisation_oame }}</td>
-                                <td>{{ d.organisation_name2 }}</td>
-                                <td>{{ d.website }}</td>
+                                <td>{{ d.id }}</td>
+                                <td>{{ d.org_name }}</td>
+                                <td>{{ d.org_acronym }}</td>
+                                <td>{{ d.founding_year }}</td>
+                                <td>{{ d.years_active }}</td>
                                 <td>{{ d.org_type }}</td>
-                                <td>{{ d.geographic_scope.value }}</td>
-                                <td>{{ d.primary_technicalsector.value }}</td>
-                                <td>{{ d.secondary_technicalsector.value }}</td>
-                                <td>{{ d.third_technicalsector.value }}</td>
-                                <td>{{ d.eco_system_tag }}</td>
-                                <td>{{ d.eco_map_sector }}</td>
-                                <td>{{ d.eco_map_subsector }}</td>
-                                <td>{{ d.total_number_of_interactions_ril }}</td>
-                                <td>{{ d.ulearn_subcategory }}</td>
-                                <td>{{ d.date_of_last_contact }}</td>
-                                <td>{{ d.status_remarks }}</td>
-                                <td>{{ d.primary_contact_name }}</td>
-                                <td>{{ d.role }}</td>
-                                <td>{{ d.email }}</td>
-                                <td>{{ d.phone }}</td>
-                                <td>{{ d.optional_contact }}</td>
-                                <td>{{ d.location_base }}</td>
-                                <td>{{ d.district }}</td>
+                                <td>{{ d.org_legaltype }}</td>
+                                <td>{{ d.refugee_settlement }}</td>
+                                <td>{{ d.refugee_zone }}</td>
+                                <td>{{ d.org_offices }}</td>
+                                <td>{{ d.org_primarytechnicalarea }}</td>
+                                <td>{{ d.org_activities }}</td>
+                                <td>{{ d.org_secondarytechnicalarea1 }}</td>
+                                <td>{{ d.org_secondarytechnicalarea2 }}</td>
+                                <td>{{ d.org_targetgroup }}</td>
+                                <td>{{ d.org_targetdemographic }}</td>
+                                <td>{{ d.org_primarycontact }}</td>
+                                <td>{{ d.org_email }}</td>
+                                <td>{{ d.org_phone }}</td>
+                                <td>{{ d.org_website }}</td>
+                                <td>{{ d.org_facebook }}</td>
+                                <td>{{ d.org_twitter }}</td>
+                                <td>{{ d.org_logo }}</td>
+                                <td>{{ d.contact_name }}</td>
+                                <td>{{ d.contact_role }}</td>
+                                <td>{{ d.contact_email }}</td>
+                                <td>{{ d.contact_phone }}</td>
                                 </tr>
                             {% endfor %}
 
