@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/logout/', home.views.user_logout),
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('api/v1/content/', include('content_api.urls')),
     path('api/v1/', include('visualizer_api.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/docs/', include_docs_urls(title='U-Learn Data Visualization API', description=''))

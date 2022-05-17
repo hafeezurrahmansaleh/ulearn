@@ -1,0 +1,218 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+
+<!-- Bootstrap Select Css -->
+<link href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet" />
+<link href="{% static 'assets/image-upload.css' %}" rel="stylesheet" />
+    <style>
+        #wizard_with_validation .content{
+            min-height: 65vh !important;
+        }
+        .wizard  .content  .body label {
+            margin-left: 10px !important;
+        }
+/*        body {*/
+/*  font-family: sans-serif;*/
+/*  background-color: #eeeeee;*/
+/*}*/
+
+    </style>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <!-- Advanced Form Example With Validation -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>ORGANIZATION DETAILS</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="zmdi zmdi-more-vert"></i> </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <form id="wizard_with_validation" method="POST">
+                            <h3>Organization Details</h3>
+                            <fieldset>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="username" required>
+                                        <label class="form-label">Organization Full Name*</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="username" required>
+                                        <label class="form-label">Organization Acronym*</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="body">
+                                        <div class="row clearfix">
+                                            <div class="col-sm-6">
+                                                <select class="form-control show-tick">
+                                                    <option value="">  -- Select Org Type --  </option>
+                                                    <option value="10">Refugee Led Organisation</option>
+                                                    <option value="20">Local and National Ngo</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <select class="form-control show-tick">
+                                                    <option value="">  -- Select Org Legal Type --  </option>
+                                                    <option value="10">LNGO</option>
+                                                    <option value="20">Community Based Organisation</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="form-group form-float">
+                                    <div class="body">
+                                        <div class="row clearfix">
+                                            <div class="col-sm-12">
+                                                <select class="form-control show-tick">
+                                                    <option value="">  -- Select Target Demographic --  </option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="40">40</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="username" required>
+                                        <label class="form-label">Target Community</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="username" >
+                                        <label class="form-label">Founding Year</label>
+                                    </div>
+                                </div>
+<!--                                <div class="form-group form-float">-->
+<!--                                    <div class="form-line">-->
+<!--                                        <input type="password" class="form-control" name="password" id="password" required>-->
+<!--                                        <label class="form-label">Password*</label>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="form-group form-float">-->
+<!--                                    <div class="form-line">-->
+<!--                                        <input type="password" class="form-control" name="confirm" required>-->
+<!--                                        <label class="form-label">Confirm Password*</label>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+                            </fieldset>
+                            <h3>Contact Information</h3>
+                            <fieldset>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="email" name="name" class="form-control" >
+                                        <label class="form-label">Organization Email</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" name="surname" class="form-control" >
+                                        <label class="form-label">Organization Phone</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" name="email" class="form-control" >
+                                        <label class="form-label">Organization Website</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" name="email" class="form-control" >
+                                        <label class="form-label">Organization Facebook</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" name="email" class="form-control" >
+                                        <label class="form-label">Organization Twitter</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" name="email" class="form-control" >
+                                        <label class="form-label">Organization Primary Contact Name</label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="email" name="email" class="form-control" >
+                                        <label class="form-label">Organization Primary Contact Email</label>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                            <h3>Settlement Information</h3>
+                            <fieldset>
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <textarea name="address" cols="30" rows="3" class="form-control no-resize" required></textarea>
+                                        <label class="form-label">Primary Technical Area Focus*</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <h3>Upload Logo - Finish</h3>
+                            <fieldset>
+                                <div class="form-group form-float">
+                                    <div class="file-upload">
+                                      <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+                                      <div class="image-upload-wrap">
+                                        <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+                                        <div class="drag-text">
+                                          <h3>Drag and drop a file or select add Image</h3>
+                                        </div>
+                                      </div>
+                                      <div class="file-upload-content">
+                                        <img class="file-upload-image" src="#" alt="your image" />
+                                        <div class="image-title-wrap">
+                                          <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                                <input id="acceptTerms-2" name="acceptTerms" type="checkbox" required>
+                                <label for="acceptTerms-2">I agree with the Terms and Conditions.</label>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Advanced Form Example With Validation -->
+    </div>
+</section>
+
+<script src="{% static 'assets/plugins/jquery-validation/jquery.validate.js' %}"></script> <!-- Jquery Validation Plugin Css -->
+<script src="{% static 'assets/plugins/jquery-steps/jquery.steps.js' %}"></script> <!-- JQuery Steps Plugin Js -->
+
+<script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script><!-- Custom Js -->
+<script src="{% static 'assets/js/pages/forms/form-wizard.js' %}"></script>
+
+<script src="{% static 'assets/js/pages/forms/basic-form-elements.js' %}"></script>
+<script src="{% static 'assets/js/image-upload.js' %}"></script>
+<script>
+
+</script>
+{% endblock %}

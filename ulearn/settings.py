@@ -36,7 +36,7 @@ LOGIN_REDIRECT_URL = '/'
 # Application definition
 
 INSTALLED_APPS = [
-    # 'home',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,6 +56,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://dashboard.ulearn-uganda.org',
+    'http://localhost:4200',
 ]
 
 ROOT_URLCONF = 'ulearn.urls'
@@ -81,7 +89,14 @@ WSGI_APPLICATION = 'ulearn.wsgi.application'
 
 
 # Rest framework
-REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #         'rest_framework.renderers.JSONRenderer',
+    #         'rest_framework.renderers.BrowsableAPIRenderer',
+    #         'rest_framework_csv.renderers.CSVRenderer',
+    #     )
+    }
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

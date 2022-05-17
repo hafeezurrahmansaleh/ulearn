@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+    {#    <link rel="stylesheet" href="{% static 'assets/plugins/summernote/summernote.css' %}"/>#}
+    {#    <script src="{% static 'assets/plugins/summernote/summernote.js' %}"></script>#}
+    <link href="{% static 'assets/css/image-upload.css' %}" rel="stylesheet"/>
+
+    <section class="content">
+        <div class="block-header">
+        </div>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Organization Details Page Content</h2>
+                        </div>
+                        <div class="body">
+                            <form>
+                                <h2 class="card-inside-title">Banner Image</h2>
+                                <div class="form-group form-float">
+                                    <div class="file-upload">
+                                        <button class="file-upload-btn" type="button"
+                                                onclick="$('.file-upload-input').trigger( 'click' )">Add Image
+                                        </button>
+
+                                        <div class="image-upload-wrap">
+                                            <input class="file-upload-input" type='file' id="banner_image" name="banner_image"
+                                                   onchange="readURL(this);"
+                                                   accept="image/*"/>
+                                            <div class="drag-text">
+                                                <h3>Drag and drop a file or select add Image</h3>
+                                            </div>
+                                        </div>
+                                        <div class="file-upload-content">
+                                            {% if data.banner_image %}
+                                                <img class="file-upload-image" style="display: block !important;"
+                                                     src="{{ data.banner_image.url }}" alt="your image"/>
+                                            {% else %}
+                                                <img class="file-upload-image" src="#" alt="your image"/>
+                                            {% endif %}
+
+                                            <div class="image-title-wrap">
+                                                <button type="button" onclick="removeUpload()" class="remove-image">
+                                                    Remove <span class="image-title">Uploaded Image</span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+
+{% endblock %}
