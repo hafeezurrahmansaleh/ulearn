@@ -90,7 +90,8 @@ class TargetDemographic(models.Model):
 
 
 class Dump(models.Model):
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    # created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
     respondent_name = models.CharField(max_length=150, null=True, blank=True)
     respondent_job_title = models.CharField(max_length=250, null=True, blank=True)
     respondent_email_address = models.CharField(max_length=250, null=True, blank=True)
@@ -109,22 +110,21 @@ class Dump(models.Model):
     years_active = models.CharField(max_length=5, null=True, blank=True)  # Field name made lowercase.
     org_primarycontact = models.CharField(max_length=250, null=True, blank=True)  # Field name made lowercase.
     settlement_operation = models.CharField(max_length=100, null=True, blank=True)  # Field name made lowercase.
+    associated_settlements = models.TextField(max_length=500, null=True, blank=True)
+    associated_thematic_areas = models.TextField(max_length=1250, null=True, blank=True)
+    total_num_of_staff = models.IntegerField(null=True, blank=True)
 
-    settlement = models.ForeignKey(Settlement, on_delete=models.CASCADE, null=True, blank=True,
-                                   related_name='d_settlement_org')
-    primary_thematic_area = models.ManyToManyField(ThematicArea, related_name='d_settlement_primary_thematic_area')
-    zones = models.TextField(max_length=1000, null=True, blank=True)
-    operation_offices = models.TextField(max_length=1000, null=True, blank=True)
-    num_of_staffs = models.IntegerField(null=True, blank=True)
+    org_type = models.CharField(max_length=100, null=True, blank=True)
+    org_type_other = models.CharField(max_length=100, null=True, blank=True)
+    org_legaltype = models.CharField(max_length=100, null=True, blank=True)  # Field name made lowercase.
+    org_legaltype_other = models.CharField(max_length=100, null=True, blank=True)  # Field name made lowercase.
 
-    org_type = models.ForeignKey(OrgType, on_delete=models.CASCADE, null=True, blank=True,
-                                 related_name='d_org_type')  # Field name made lowercase.
-    org_legaltype = models.TextField(null=True, blank=True)  # Field name made lowercase.
-    org_primary_technical_area_focus = models.TextField(max_length=500, null=True,
+    org_primary_technical_area_focus = models.TextField(max_length=1000, null=True,
                                                         blank=True)  # Field name made lowercase.
     org_targetgroup = models.CharField(max_length=250, null=True, blank=True)  # Field name made lowercase.
-    org_targetdemographic = models.ForeignKey(TargetDemographic, on_delete=models.CASCADE, null=True, blank=True,
-                                              related_name='d_org_targetdemographic')
+    org_targetgroup_other = models.CharField(max_length=250, null=True, blank=True)  # Field name made lowercase.
+    org_targetdemographic = models.TextField(max_length=500, null=True, blank=True)
+    org_targetdemographic_other = models.TextField(max_length=500, null=True, blank=True)
 
     other_actors_in_settlement = models.CharField(max_length=10, null=True, blank=True)  # Field name made lowercase.
 
@@ -133,22 +133,33 @@ class Dump(models.Model):
     contact_phone = models.CharField(max_length=50, null=True, blank=True)  # Field name made lowercase.
     contact_email = models.CharField(max_length=150, null=True, blank=True)  # Field name made lowercase.
 
+    logo_img = models.ImageField(null=True, blank=True)
+    uuid = models.CharField(max_length=250, null=True, blank=True)
+
     upsrt_dttm = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('org_name',)
 
-    # class Meta:
-    #     managed = True
-    #     # db_table = 'dump'
-
     def __str__(self):
         return self.org_name
 
 
+class DumpSettlements(models.Model):
+    org = models.ForeignKey(Dump, on_delete=models.CASCADE, related_name='dump_settlement')
+    settlement = models.CharField(max_length=120, null=True, blank=True)
+    primary_thematic_area = models.CharField(max_length=250, null=True, blank=True)
+    zones = models.CharField(max_length=250, null=True, blank=True)
+    operation_offices = models.TextField(max_length=1000, null=True, blank=True)
+    num_of_staffs = models.CharField(max_length=50,null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    upsrt_dttm = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.org.org_name + ' |----> ' +self.settlement
+
 class CleanData(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
     respondent_name = models.CharField(max_length=150, null=True, blank=True)
     respondent_job_title = models.CharField(max_length=250, null=True, blank=True)
     respondent_email_address = models.CharField(max_length=250, null=True, blank=True)
@@ -211,16 +222,16 @@ class SettlementOrgAssociation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     upsrt_dttm = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        super(SettlementOrgAssociation, self).save(*args, **kwargs)
-        all_settlements = SettlementOrgAssociation.objects.filter(org=self.org)
-        self.org.associated_settlements = (', '.join(all_settlements.values_list('settlement__value', flat=True)))
-        all_area = []
-        for s in all_settlements:
-            all_area = all_area + list(s.primary_thematic_area.values_list('value', flat=True))
-        all_area = list(set(all_area))
-        self.org.associated_thematic_areas = (', '.join(all_area))
-        self.org.save()
+    # def save(self, *args, **kwargs):
+    #     super(SettlementOrgAssociation, self).save(*args, **kwargs)
+    #     all_settlements = SettlementOrgAssociation.objects.filter(org=self.org)
+    #     self.org.associated_settlements = (', '.join(all_settlements.values_list('settlement__value', flat=True)))
+    #     all_area = []
+    #     for s in all_settlements:
+    #         all_area = all_area + list(s.primary_thematic_area.values_list('value', flat=True))
+    #     all_area = list(set(all_area))
+    #     self.org.associated_thematic_areas = (', '.join(all_area))
+    #     self.org.save()
 
     def delete(self, *args, **kwargs):
         super(SettlementOrgAssociation, self).delete(*args, **kwargs)

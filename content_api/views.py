@@ -109,3 +109,13 @@ class LandingPageContentDetailsView(APIView):
     serializer_class = LandingPageContentDetailsSerializer
     lookup_field = 'pk'
     queryset = LandingPageContent.objects.all()
+
+
+class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+       endpoint for creating the list of technical areas
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserDetailsSerializer
+    lookup_field = 'username'
+    queryset = User.objects.all()

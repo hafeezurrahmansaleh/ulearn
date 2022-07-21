@@ -449,7 +449,6 @@ class ExportCSVStudents(APIView):
             'Org primary contact',
             'Org primary contact mail address',
             'Org category',
-            'Org legal registration',
             'Settlements in which org operates',
             'Thematic areas of work',
             'Target groups',
@@ -469,7 +468,6 @@ class ExportCSVStudents(APIView):
                 f.org_primarycontact,
                 f.contact_email,
                 f.org_type.value,
-                f.org_legaltype,
                 f.associated_settlements,
                 f.associated_thematic_areas,
                 f.org_targetgroup

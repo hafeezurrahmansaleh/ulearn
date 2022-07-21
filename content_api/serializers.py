@@ -49,3 +49,18 @@ class LandingPageContentDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandingPageContent
         fields = '__all__'
+
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LandingPageContent
+        fields = ('first_name',
+                  'username',
+                  'email',
+                  'phone',
+                  'is_stuff',
+                  'is_superuser',
+                  'password',
+                  )
+

@@ -62,7 +62,7 @@ class CleanDataSerializer(serializers.ModelSerializer):
         source="org_type.value",
         read_only=True
     )
-    org_targetdemographic = TargetDemographicListingField(many=True,read_only=True)
+    org_targetdemographic = TargetDemographicListingField(many=True, read_only=True)
     # org_targetdemographic = serializers.CharField(
     #     source="org_targetdemographic.value",
     #     read_only=True

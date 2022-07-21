@@ -16,7 +16,7 @@
                             <h2>Landing Page Content</h2>
                         </div>
                         <div class="body">
-                            <form>
+                            <form method="post" action="/landing-page-content/" enctype="multipart/form-data">{% csrf_token %}
                                 <h2 class="card-inside-title">Title 1</h2>
                                 <div class="row clearfix">
                                     <div class="col-sm-12">
@@ -25,9 +25,11 @@
                                                 {% if data.title1 %}
                                                     <input class="form-control no-resize" name="title1"
                                                            value="{{ data.title1 }}"
+                                                           id="t1"
                                                            placeholder="Please enter title for the top of the page">
                                                 {% else %}
                                                     <input class="form-control no-resize" name="title1"
+                                                           id="t1"
                                                            placeholder="Please enter title for the top of the page">
                                                 {% endif %}
                                             </div>
@@ -172,29 +174,42 @@
 
                                 <h2 class="card-inside-title">Banner Image</h2>
                                 <div class="form-group form-float">
-                                    <div class="file-upload">
-                                        <button class="file-upload-btn" type="button"
-                                                onclick="$('.file-upload-input').trigger( 'click' )">Add Image
-                                        </button>
-
-                                        <div class="image-upload-wrap">
-                                            <input class="file-upload-input" type='file' name="banner_image"
-                                                   onchange="readURL(this);"
-                                                   accept="image/*"/>
-                                            <div class="drag-text">
-                                                <h3>Drag and drop a file or select add Image</h3>
+                                    <div class="form-group form-float">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                {% if data.banner_image %}
+                                                    <img class="" style="display: block !important; max-width: 80%; margin:auto; height: auto" src="{{ data.banner_image.url }}" alt="your image"/>
+                                                {% else %}
+                                                    <p class="text-center">No image uploaded</p>
+                                                {% endif %}
                                             </div>
-                                        </div>
-                                        <div class="file-upload-content">
-                                            {% if data.banner_image %}
-                                                <img class="file-upload-image" style="display: block !important;" src="{{ data.banner_image.url }}" alt="your image"/>
-                                            {% else %}
-                                                <img class="file-upload-image" src="#" alt="your image"/>
-                                            {% endif %}
+                                            <div class="col-md-12">
+                                                <div class="file-upload" style="width: 80%; text-align: center">
+                                                    <button class="file-upload-btn" type="button"
+                                                            onclick="$('.file-upload-input').trigger( 'click' )">Change
+                                                        Image
+                                                    </button>
 
-                                            <div class="image-title-wrap">
-                                                <button type="button" onclick="removeUpload()" class="remove-image">
-                                                    Remove <span class="image-title">Uploaded Image</span></button>
+                                                    <div class="image-upload-wrap">
+                                                        <input class="file-upload-input" type='file' name="banner_image"
+                                                               onchange="readURL(this);"
+                                                               accept="image/*"
+                                                        />
+                                                        <div class="drag-text">
+                                                            <h3>Drag and drop a file or select Change Image</h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="file-upload-content">
+                                                        <img class="file-upload-image" src="#" alt="your image"/>
+
+                                                        <div class="image-title-wrap">
+                                                            <button type="button" onclick="removeUpload()" class="remove-image">
+                                                                Remove <span class="image-title">Uploaded Image</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-raised bg-pink btn-block btn-lg waves-effect mt-3" style="border-radius:22px;max-width: 200px; margin:auto">SUBMIT CHANGES</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -207,5 +222,5 @@
         </div>
     </section>
 
-    <script src="{% static 'assets/js/image-upload.js' %}"></script>
+    {#    <script src="{% static 'assets/js/image-upload.js' %}"></script>#}
 {% endblock %}

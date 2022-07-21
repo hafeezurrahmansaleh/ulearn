@@ -6,6 +6,11 @@ $(function () {
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        ],
+        fixedHeader: true,
+        scrollX: true,
+        scrollY: '85vh',
+        scrollCollapse: true,
+
     });
 });

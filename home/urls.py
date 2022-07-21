@@ -16,8 +16,15 @@ urlpatterns = [
     path('thematic-area/', login_required(ThematicAreaView.as_view())),
     path('target-demographic/', login_required(TargetDemoView.as_view())),
     path('add-org/', login_required(AddOrgView.as_view())),
+    path('org-details/<id>/', login_required(OrgDetailsView.as_view())),
+    path('delete-org/<id>/', login_required(DeleteOrgView.as_view())),
+    path('update-org-logo/<id>/', login_required(UpdateLogoView.as_view())),
     path('landing-page-content/', login_required(LandingPageContentView.as_view())),
     path('org-details-page-content/', login_required(OrgDetailsPageContentView.as_view())),
+    path('create-user/', login_required(UserCreateView.as_view())),
+    path('update-user/<id>/', login_required(UpdateUserView.as_view())),
+    path('user-list/', login_required(UserListView.as_view())),
+    path('raw-data/', login_required(RawDataView.as_view())),
 ]
 
 

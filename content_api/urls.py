@@ -12,4 +12,5 @@ urlpatterns = [
     path('target-demographic-details/<pk>/', TargetDemographicDetailView.as_view()),
     path('create-landing-page-content/', LandingPageContentCreateView.as_view()),
     path('landing-page-content-details/<pk>/', LandingPageContentDetailsView.as_view()),
+    path('user-details/<username>/', UserDetailView.as_view()),
 ]

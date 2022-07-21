@@ -11,7 +11,7 @@
 
     <title>U-Learn Dashboard</title>
     <!-- Favicon-->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static 'assets/images/ulearn_favicon.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
 
     <link rel="stylesheet" href="{% static 'assets/plugins/jvectormap/jquery-jvectormap-2.0.3.css' %}"/>
@@ -19,12 +19,15 @@
     <!-- Custom Css -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/color_skins.css' %}">
-{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"#}
-{#          integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="#}
-{#          crossorigin="anonymous" referrerpolicy="no-referrer"/>#}
-{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.min.css"#}
-{#          integrity="sha512-cyIcYOviYhF0bHIhzXWJQ/7xnaBuIIOecYoPZBgJHQKFPo+TOBA+BY1EnTpmM8yKDU4ZdI3UGccNGCEUdfbBqw=="#}
-{#          crossorigin="anonymous" referrerpolicy="no-referrer"/>#}
+
+    <!-- Animation Css -->
+    <link href="{% static 'assets/plugins/animate-css/animate.css' %}" rel="stylesheet"/>
+    {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"#}
+    {#          integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="#}
+    {#          crossorigin="anonymous" referrerpolicy="no-referrer"/>#}
+    {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.min.css"#}
+    {#          integrity="sha512-cyIcYOviYhF0bHIhzXWJQ/7xnaBuIIOecYoPZBgJHQKFPo+TOBA+BY1EnTpmM8yKDU4ZdI3UGccNGCEUdfbBqw=="#}
+    {#          crossorigin="anonymous" referrerpolicy="no-referrer"/>#}
 
 
     <!--    ZMDI CDN-->
@@ -41,6 +44,12 @@
         .swal2-select {
             display: none;
         }
+
+        .form-control {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
     </style>
 </head>
 <body class="theme-red">
@@ -98,6 +107,7 @@
                         Visualization</small>
                 </h6>
             </li>
+            <li><a href="/logout/" class="pr-3" title="Sign-out"><i class="material-icons">input</i></a></li>
         </ul>
     </div>
 </nav>
@@ -110,21 +120,18 @@
             <img src="{% static 'assets/images/xs/avatar1.jpg' %}" width="48" height="48" alt="User"/>
         </div>
         <div class="info-container">
-            <div class="name" data-toggle="dropdown">Asif Shakir</div>
-            <div class="btn-group user-helper-dropdown">
-                <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                   role="button"> keyboard_arrow_down </i>
-                <ul class="dropdown-menu slideUp">
-                    <li><a href="/change-password/"><i class="material-icons">person</i>Profile</a></li>
-                    <!--                    <li class="divider"></li>-->
-                    <!--                    <li><a href="javascript:void(0);"><i class="material-icons">group</i>Followers</a></li>-->
-                    <!--                    <li><a href="javascript:void(0);"><i class="material-icons">shopping_cart</i>Sales</a></li>-->
-                    <!--                    <li><a href="javascript:void(0);"><i class="material-icons">favorite</i>Likes</a></li>-->
-                    <li class="divider"></li>
-                    <li><a href="/sign-in/"><i class="material-icons">input</i>Sign Out</a></li>
-                </ul>
-            </div>
-            <div class="email">asifshakir@gmail.com</div>
+            {% if request.user.is_authenticated %}
+                {% if request.user.get_full_name %}
+                    <div class="name" data-toggle="dropdown">{{ request.user.get_full_name }}</div>
+                {% else %}
+                    <div class="name" data-toggle="dropdown">{{ request.user.username }}</div>
+                {% endif %}
+                {% if request.user.email %}
+                    <div class="email">{{ request.user.email }}</div>
+                {% endif %}
+            {% else %}
+                <p>Welcome</p>
+            {% endif %}
         </div>
     </div>
     <!-- #User Info -->
@@ -148,29 +155,33 @@
             <li><a href="/target-demographic/"><i class="zmdi zmdi-group-work"></i><span>Target Demographic</span> </a>
             </li>
             <li><a href="/thematic-area/"><i class="zmdi zmdi-tab"></i><span>Thematic Area</span> </a></li>
-            <li><a href="javascript:void(0);" class="menu-toggle"><i
-                    class="zmdi zmdi-copy"></i><span>Organization Data</span> </a>
-                <ul class="ml-menu">
-                    <li><a href="/import-excel/">Import Excel</a></li>
-                    <li><a href="/org-list/">Organization List</a></li>
-                    <li><a href="/raw-data/">Raw Data</a></li>
-                    <li><a href="/add-org/">Add New Organization</a></li>
-                </ul>
-            </li>
+            <li class="header">Organization Data</li>
+            {#            <li>#}
+            {#                <a href="javascript:void(0);" class="menu-toggle">#}
+            {#                class="menu-toggle">#}
+            {#                <i class="zmdi zmdi-copy"></i><span>Organization Data</span> </a>#}
+            {#                <ul class="" >#}
+            <li><a href="/import-excel/"><i class="zmdi zmdi-import-export col-cyan"></i> Import Excel</a></li>
+            <li><a href="/org-list/"><i class="zmdi zmdi-view-list col-deep-purple"></i> Organization List</a></li>
+            <li><a href="/raw-data/"><i class="zmdi zmdi-copy col-deep-orange"></i> Raw Data</a></li>
+            <li><a href="/add-org/"><i class="zmdi zmdi-file-add col-light-blue"></i> Add New Organization</a></li>
+            {#                </ul>#}
+            {#            </li>#}
 
             <li class="header">SITE CONTENT</li>
             <li><a href="/landing-page-content/"><i class="zmdi zmdi-chart-donut col-red"></i><span>Landing Page</span>
             </a></li>
             <li><a href="/org-details-page-content/"><i class="zmdi zmdi-chart-donut col-amber"></i><span>Organization Details Page</span>
             </a></li>
-
-            <li class="header">USER MANAGEMENT</li>
-            <li><a href="javascript:void(0);"><i class="zmdi zmdi-accounts col-red"></i><span>User Group</span> </a>
-            </li>
-            <li><a href="javascript:void(0);"><i class="zmdi zmdi-account col-amber"></i><span>User List</span> </a>
-            </li>
-            <li><a href="javascript:void(0);"><i class="zmdi zmdi-account-add col-blue"></i><span>Add User</span> </a>
-            </li>
+            {% if request.user.is_superuser %}
+                <li class="header">USER MANAGEMENT</li>
+                {#            <li><a href="javascript:void(0);"><i class="zmdi zmdi-accounts col-red"></i><span>User Group</span> </a>#}
+                {#            </li>#}
+                <li><a href="/user-list/"><i class="zmdi zmdi-account col-deep-purple"></i><span>User List</span> </a>
+                </li>
+                <li><a href="/create-user/"><i class="zmdi zmdi-account-add col-blue"></i><span>Add User</span> </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
     <!-- #Menu -->
@@ -186,44 +197,19 @@
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<script>
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'error' %}
-                Swal.fire(
-                    'Good job!',
-                    {{ message }},
-                    'success'
-                )
-            {% elif  message.tags == 'success' %}
-                Swal.fire(
-                    'Good job!',
-                    {{ message }},
-                    'success'
-                )
-            {% elif  message.tags == 'warning' %}
-                Swal.fire(
-                    'Good job!',
-                    {{ message }},
-                    'success'
-                )
-            {% endif %}
-
-        {% endfor %}
-    {% endif %}
-</script>
-
-
-
 
 <!-- Jquery Core Js -->
 <script src="{% static 'assets/bundles/libscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
 <script src="{% static 'assets/bundles/vendorscripts.bundle.js' %}"></script> <!-- Lib Scripts Plugin Js -->
 
 <script src="{% static 'assets/bundles/jvectormap.bundle.js' %}"></script> <!-- JVectorMap Plugin Js -->
-{#<script src="{% static 'assets/bundles/morrisscripts.bundle.js' %}"></script><!-- Morris Plugin Js -->#}
+<script src="{% static 'assets/bundles/morrisscripts.bundle.js' %}"></script><!-- Morris Plugin Js -->
+<script src="{% static 'assets/bundles/flotchartsscripts.bundle.js' %}"></script> <!-- flot charts Plugin Js -->
 {#<script src="{% static 'assets/bundles/sparkline.bundle.js' %}"></script> <!-- Sparkline Plugin Js -->#}
 <script src="{% static 'assets/bundles/knob.bundle.js' %}"></script> <!-- Jquery Knob Plugin Js -->
+
+
+<script src="{% static 'assets/plugins/multi-select/js/jquery.multi-select.js' %}"></script>
 
 <script src="{% static 'assets/bundles/mainscripts.bundle.js' %}"></script>
 {#<script src="{% static 'assets/js/pages/index.js' %}"></script>#}
@@ -232,7 +218,36 @@
 {% block main_content %}
 
 {% endblock %}
+
+<script type="text/javascript">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                Swal.fire(
+                    'Failed!',
+                    '{{ message }}',
+                    'error'
+                )
+            {% elif  message.tags == 'success' %}
+                Swal.fire(
+                    'Success!',
+                    '{{ message }}',
+                    'success'
+                )
+            {% elif  message.tags == 'warning' %}
+                Swal.fire(
+                    'Warning!',
+                    '{{ message }}',
+                    'warning'
+                )
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+</script>
+
+
 </body>
 
-<!-- Mirrored from wrraptheme.com/templates/nexa/html/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Apr 2022 23:03:25 GMT -->
 </html>

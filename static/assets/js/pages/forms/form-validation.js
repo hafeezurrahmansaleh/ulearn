@@ -27,6 +27,9 @@ $(function () {
             },
             'creditcard': {
                 creditcard: true
+            },
+            'confirm': {
+                equalTo: '#password'
             }
         },
         highlight: function (input) {
@@ -39,6 +42,8 @@ $(function () {
             $(element).parents('.form-group').append(error);
         }
     });
+
+
 
     //Custom Validations ===============================================================================
     //Date

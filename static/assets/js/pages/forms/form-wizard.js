@@ -44,7 +44,9 @@ $(function () {
             setButtonWavesEffect(event);
         },
         onStepChanging: function (event, currentIndex, newIndex) {
-            if (currentIndex > newIndex) { return true; }
+            if (currentIndex > newIndex) {
+                return true;
+            }
 
             if (currentIndex < newIndex) {
                 form.find('.body:eq(' + newIndex + ') label.error').remove();
@@ -62,7 +64,14 @@ $(function () {
             return form.valid();
         },
         onFinished: function (event, currentIndex) {
-            swal("Good job!", "Submitted!", "success");
+            //Added by Saleh
+            try {
+                document.getElementById('wizard_with_validation').submit();
+            } catch (err) {
+                console.log(err.message);
+            }
+            //end
+            // swal("Good job!", "Submitted!", "success");
         }
     });
 
@@ -88,3 +97,6 @@ function setButtonWavesEffect(event) {
     $(event.currentTarget).find('[role="menu"] li a').removeClass('waves-effect');
     $(event.currentTarget).find('[role="menu"] li:not(.disabled) a').addClass('waves-effect');
 }
+
+
+
