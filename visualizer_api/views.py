@@ -119,26 +119,29 @@ class FilterCleanDataView(generics.ListAPIView):
         queryset = CleanData.objects.all().distinct()
         # print(self.request.GET['settlement'])
         # print(self.request.data['settlement'])
+        # print(queryset.filter(org_acronym='TEST'))
 
         try:
-            settlement = (self.request.GET['settlement']).split(",")
+            settlement_str = self.request.GET['settlement']
 
             print('settlement: ')
-            if settlement:
+            if settlement_str:
+                settlement = settlement_str.split(",")
                 settlement_q = get_query(settlement, ['associated_settlements'])
                 queryset = queryset.filter(settlement_q)
-                # print(settlement_q)
+                print(settlement_q)
             else:
                 settlement = None
         except Exception as e:
             settlement = None
             print(e)
         try:
-            thematic_area = self.request.GET['thematic_area_of_work'].split(",")
-            if thematic_area:
+            thematic_area_str = self.request.GET['thematic_area_of_work']
+            if thematic_area_str:
                 # if thematic_area == 'Other':
                 #     queryset = queryset.filter(org_settlement__primary_thematic_area__exclude_from_filter=True)
                 # else:
+                thematic_area = thematic_area_str.split(",")
                 thematic_area_q = get_query(thematic_area, ['associated_thematic_areas'])
                 queryset = queryset.filter(thematic_area_q)
                 print(thematic_area_q)
@@ -147,8 +150,9 @@ class FilterCleanDataView(generics.ListAPIView):
         except:
             thematic_area = None
         try:
-            org_type = self.request.GET['type_of_org'].split(",")
-            if org_type:
+
+            if self.request.GET['type_of_org']:
+                org_type = self.request.GET['type_of_org'].split(",")
                 if org_type[0] == 'Other':
                     print('inside type other field')
                     queryset = queryset.filter(org_type__exclude_from_filter=True)
@@ -160,8 +164,8 @@ class FilterCleanDataView(generics.ListAPIView):
         except:
             org_type = None
         try:
-            target_demographic = self.request.GET['target_demographic'].split(",")
-            if target_demographic:
+            if self.request.GET['target_demographic']:
+                target_demographic = self.request.GET['target_demographic'].split(",")
                 # if target_demographic == 'Other':
                 #     queryset = queryset.filter(org_targetdemographic__exclude_from_filter=True)
                 # else:
@@ -188,7 +192,8 @@ class FilterCleanDataView(generics.ListAPIView):
                 # print(queryset)
                 # print(entry_query)
                 queryset = queryset.filter(entry_query)
-                print(queryset)
+
+        # print(queryset)
         queryset = queryset.filter(org_type__exclude_from_filter=False)
         queryset = queryset.distinct()
 

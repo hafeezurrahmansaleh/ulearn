@@ -71,8 +71,10 @@ class IndexView(View):
         org_type_count = OrgType.objects.all().count()
         ta_count = ThematicArea.objects.all().count()
         org_count = CleanData.objects.all().count()
-        settlements = SettlementOrgAssociation.objects.values('settlement__value').order_by('settlement__value').annotate(count=Count('id'), count_org=Count('org_id'))
-        org_types = CleanData.objects.filter(org_type__exclude_from_filter=False).values('org_type__value').order_by('org_type__value').annotate(count=Count('id'))
+        settlements = SettlementOrgAssociation.objects.values('settlement__value').order_by(
+            'settlement__value').annotate(count=Count('id'), count_org=Count('org_id'))
+        org_types = CleanData.objects.filter(org_type__exclude_from_filter=False).values('org_type__value').order_by(
+            'org_type__value').annotate(count=Count('id'))
         context = {
             'settlement_count': settlement_count,
             'org_type_count': org_type_count,
@@ -149,7 +151,8 @@ class AddOrgView(View):
         thematic_area = ThematicArea.objects.all()
         settlements = Settlement.objects.all()
         target_demo = TargetDemographic.objects.all()
-        org_legal_type = ['Community-Based Organisation', 'Continental organisation', 'Foreign organisation', 'Indigenous organisation', 'International organisation', 'Regional organisation']
+        org_legal_type = ['Community-Based Organisation', 'Continental organisation', 'Foreign organisation',
+                          'Indigenous organisation', 'International organisation', 'Regional organisation']
         target_group = ['Refugees', 'Host community', 'Refugees and Host community']
         context = {
             'org_type': org_type,
@@ -237,8 +240,12 @@ class AddOrgView(View):
                 for j in range(Settlement.objects.all().count()):
                     i = j + 1
                     try:
-                        print(i)
-                        settlement = request.POST.get('settlement_' + str(i)).replace("'", "")
+                        settlement = request.POST.get('settlement_' + str(i))
+                        if settlement:
+                            try:
+                                settlement = settlement.replace("'", "")
+                            except:
+                                traceback.print_exc()
                         try:
                             number_of_staff = int(request.POST.get('number_of_staff_' + str(i)))
                         except:
@@ -262,7 +269,8 @@ class AddOrgView(View):
 
                 update_org_associated_field(cleandata_ins)
                 messages.success(request, 'Organization data updated successfully!')
-            except Exception:
+            except Exception as e:
+                print(e)
                 messages.error(request, 'Failed to update organization data!')
                 traceback.print_exc()
         return redirect('/add-org/')
@@ -283,7 +291,8 @@ class OrgDetailsView(View):
         settlements = Settlement.objects.all()
         target_demo = TargetDemographic.objects.all()
         org_ins = CleanData.objects.get(id=id)
-        org_legal_type = ['Community-Based Organisation', 'Continental organisation', 'Foreign organisation', 'Indigenous organisation', 'International organisation', 'Regional organisation']
+        org_legal_type = ['Community-Based Organisation', 'Continental organisation', 'Foreign organisation',
+                          'Indigenous organisation', 'International organisation', 'Regional organisation']
         org_sttlmnt = SettlementOrgAssociation.objects.filter(org=org_ins)
         target_group = ['Refugees', 'Host community', 'Refugees and Host community']
         context = {
@@ -328,7 +337,7 @@ class OrgDetailsView(View):
                 years_active = None
 
             try:
-                cdata = CleanData.objects.filter(org_name=org_name)
+                cdata = CleanData.objects.filter(id=id)
                 if cdata.count() > 0:
                     cdata.update(
                         org_name=org_name,
@@ -350,17 +359,25 @@ class OrgDetailsView(View):
                     SettlementOrgAssociation.objects.filter(org=cdata[0]).delete()
                     cleandata_ins = cdata[0]
                     cleandata_ins.org_targetdemographic.set(org_target_demographic)
-                    if cleandata_ins.logo_img:
-                        image_path = cleandata_ins.logo_img.path
-                        if os.path.exists(image_path):
-                            os.remove(image_path)
-                    cleandata_ins.logo_img = org_logo
+                    if org_logo:
+                        if cleandata_ins.logo_img:
+                            image_path = cleandata_ins.logo_img.path
+                            if os.path.exists(image_path):
+                                os.remove(image_path)
+                        cleandata_ins.logo_img = org_logo
                     cleandata_ins.save()
                     for j in range(Settlement.objects.all().count()):
                         i = j + 1
                         try:
                             print(i)
-                            settlement = request.POST.get('settlement_' + str(i)).replace("'", "")
+                            settlement = request.POST.get('settlement_' + str(i))
+                            if settlement:
+                                try:
+                                    settlement = settlement.replace("'", "")
+                                except Exception as e:
+                                    print(e)
+                                    traceback.print_exc()
+                            # print(settlement)
                             try:
                                 number_of_staff = int(request.POST.get('number_of_staff_' + str(i)))
                             except:
@@ -387,7 +404,7 @@ class OrgDetailsView(View):
                 else:
                     messages.error(request, 'Failed to update organization data!')
                     return redirect('/org-details/' + id)
-            except Exception:
+            except Exception as e:
                 messages.error(request, 'Failed to update organization data!')
                 traceback.print_exc()
                 return redirect('/org-details/' + id)
@@ -712,6 +729,9 @@ def import_excel(request):
                     org_email = str(d['org_email']).replace('nan', '')
                     org_telephone = str(d['org_telephone']).replace('nan', '').replace('.0', '')
                     org_website = str(d['org_website']).replace('nan', '')
+                    org_website = org_website.strip()
+                    if not org_website.startswith('http'):
+                        org_website = 'https://' + org_website
                     org_facebook = str(d['org_facebook']).replace('nan', '')
                     org_twitter = str(d['org_twitter']).replace('nan', '')
                     org_logo = str(d['org_logo']).replace('nan', '')
@@ -763,11 +783,13 @@ def import_excel(request):
                         continue
 
                     if org_type.strip() not in ('', 'None', 'Other', 'other', 'nan') and org_type is not None:
-                        org_type_ins = OrgType.objects.get_or_create(value=titlecase(org_type.strip().replace('_', ' ')),
-                                                                     title=titlecase(org_type.strip().replace('_', ' ')),
-                                                                     exclude_from_filter=False
-                                                                     )[0]
-                    elif org_type.strip() in ('Other', 'other') and org_type_other is not None and org_type_other not in (
+                        org_type_ins = \
+                        OrgType.objects.get_or_create(value=titlecase(org_type.strip().replace('_', ' ')),
+                                                      title=titlecase(org_type.strip().replace('_', ' ')),
+                                                      exclude_from_filter=False
+                                                      )[0]
+                    elif org_type.strip() in (
+                    'Other', 'other') and org_type_other is not None and org_type_other not in (
                             '', 'None'):
                         org_type_ins = \
                             OrgType.objects.get_or_create(value=titlecase(org_type_other.strip().replace('_', ' ')),
@@ -782,10 +804,11 @@ def import_excel(request):
                         for td in target_demos:
                             if td not in ('', 'None', 'Other', 'other', 'NaN') and org_target_demographic is not None:
                                 target_demo_list.append(
-                                    TargetDemographic.objects.get_or_create(value=titlecase(td.strip().replace('_', ' ')),
-                                                                            title=titlecase(td.strip().replace('_', ' ')),
-                                                                            exclude_from_filter=False
-                                                                            )[0].id
+                                    TargetDemographic.objects.get_or_create(
+                                        value=titlecase(td.strip().replace('_', ' ')),
+                                        title=titlecase(td.strip().replace('_', ' ')),
+                                        exclude_from_filter=False
+                                        )[0].id
                                 )
                             # else:
                             #     target_demo_list.append(TargetDemographic.objects.get_or_create(
@@ -798,7 +821,8 @@ def import_excel(request):
                             '', 'None', 'Other', 'other', 'nan') and org_target_community is not None:
                         org_target_community_val = titlecase(org_target_community.strip().replace('_', ' '))
                     else:
-                        org_target_community_val = titlecase(org_target_community_other.replace('nan', '').replace('_', ' '))
+                        org_target_community_val = titlecase(
+                            org_target_community_other.replace('nan', '').replace('_', ' '))
 
                     # # ORG logo cleanup
                     # if img_URL not in ('', 'nan', 'None') and img_URL is not None:
@@ -933,7 +957,8 @@ def import_excel(request):
                                     primary_thematic_list = str(l_primary_thematic_areas).split(' ')
                                     for pta in primary_thematic_list:
                                         if str(pta) in ('Other', 'other'):
-                                            pta_other = d[primary_thematic_area_col_nm + '_other'].strip().replace('nan', '')
+                                            pta_other = d[primary_thematic_area_col_nm + '_other'].strip().replace(
+                                                'nan', '')
                                             # if pta_other != '':
                                             #     pta_id_list.append(
                                             #         ThematicArea.objects.get_or_create(
@@ -942,10 +967,11 @@ def import_excel(request):
                                             #             0].id)
                                         elif pta not in ('', 'nan'):
                                             pta_id_list.append(
-                                                ThematicArea.objects.get_or_create(value=titlecase(pta.replace('_', ' ')),
-                                                                                   title=titlecase(pta.replace('_', ' ')),
-                                                                                   exclude_from_filter=False
-                                                                                   )[0].id)
+                                                ThematicArea.objects.get_or_create(
+                                                    value=titlecase(pta.replace('_', ' ')),
+                                                    title=titlecase(pta.replace('_', ' ')),
+                                                    exclude_from_filter=False
+                                                    )[0].id)
                                 except:
                                     l_primary_thematic_areas = None
                                 # print(l_primary_thematic_areas)
