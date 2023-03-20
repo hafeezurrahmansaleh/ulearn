@@ -169,6 +169,7 @@ class CleanDataAdmin(admin.ModelAdmin):
 
 
 admin.site.register(DumpSettlements)
+admin.site.register(SettlementZone)
 admin.site.register(PartnerLogo)
 admin.site.register(TargetCommunity)
 admin.site.register(PartnerType)
