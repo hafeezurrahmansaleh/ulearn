@@ -73,6 +73,7 @@ class SettlementOrgAssociationCreateSerializer(serializers.ModelSerializer):
     )
     primary_thematic_area = serializers.PrimaryKeyRelatedField(
         many=True,
+        required=False,
         queryset=ThematicArea.objects.all()
     )
 
@@ -87,19 +88,21 @@ class SettlementOrgAssociationCreateSerializer(serializers.ModelSerializer):
 
 
 class DataEntrySerializer(WritableNestedModelSerializer):
-    org_settlement = SettlementOrgAssociationCreateSerializer(many=True)
+    org_settlement = SettlementOrgAssociationCreateSerializer(many=True,required=False)
     # theme = ThematicTagSerializer(many=True)
     # attending_organization = OrganizationSerializer(many=True)
     org_type = serializers.SlugRelatedField(
         many=False,
         read_only=False,
         slug_field='id',
+        required=False,
         queryset=OrgType.objects.all()
     )
     org_targetdemographic = serializers.SlugRelatedField(
         many=True,
         read_only=False,
         slug_field='id',
+        required=False,
         queryset=TargetDemographic.objects.all()
     )
 
