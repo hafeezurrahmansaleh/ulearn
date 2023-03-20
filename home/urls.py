@@ -25,6 +25,11 @@ urlpatterns = [
     path('update-user/<id>/', login_required(UpdateUserView.as_view())),
     path('user-list/', login_required(UserListView.as_view())),
     path('raw-data/', login_required(RawDataView.as_view())),
+
+    path('partner-types/', login_required(PartnerTypeListView.as_view())),
+    path('partners/', login_required(PartnerListView.as_view())),
+    path('create-partner/', login_required(PartnerCreateView.as_view())),
+    path('partner-details/<id>/', login_required(PartnerDetailsView.as_view())),
 ]
 
 

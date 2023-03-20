@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (
-    IsAuthenticated
+    IsAuthenticated, AllowAny
 )
 # from urllib3.connectionpool import xrange
 from rest_framework.response import Response
@@ -13,7 +13,7 @@ from .serializers import *
 
 import csv
 #
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 #
 from rest_framework.views import APIView
 import datetime as dt
@@ -119,3 +119,42 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailsSerializer
     lookup_field = 'username'
     queryset = User.objects.all()
+
+
+class DropdownItemView(APIView):
+    def get(self, request):
+        settlements = list(Settlement.objects.all().values('id', 'value').distinct())
+        # geographic_scopes = list(GeographicScope.objects.all().values('id','value').distinct())
+        type_of_org = list(OrgType.objects.filter(exclude_from_filter=False).values('id', 'value').distinct())
+        thematic_area_of_work = list(
+            ThematicArea.objects.filter(exclude_from_filter=False).values('id', 'value').distinct())
+        type_of_demographic = list(
+            TargetDemographic.objects.filter(exclude_from_filter=False).values('id', 'value').distinct())
+        target_community = list(
+            TargetCommunity.objects.filter(exclude_from_filter=False).values('id', 'value').distinct())
+        zone = list(
+            SettlementZone.objects.all().values('id', 'settlement_id', 'value').distinct())
+        # new_dict = {'id': -1,'value': 'Other'}
+        # c = new_dict.copy()
+        # type_of_org.append(c)
+        # thematic_area_of_work.append(c)
+        # type_of_demographic.append(c)
+        # type_of_org = type_of_org.append("{'id': -1, 'value': 'Other'}" )
+        return JsonResponse({'settlements': settlements,
+                             'zone': zone,
+                             'type_of_org': type_of_org,
+                             'thematic_area_of_work': thematic_area_of_work,
+                             'target_demographic': type_of_demographic,
+                             'target_community': target_community,
+                             },
+                            safe=False, status=status.HTTP_200_OK)
+
+
+class DataEntryView(generics.ListCreateAPIView):
+    """
+       endpoint for retrieving the list of technical areas
+    """
+
+    permission_classes = (AllowAny,)
+    serializer_class = DataEntrySerializer
+    queryset = CleanData.objects.filter(data_source='Form Submission')

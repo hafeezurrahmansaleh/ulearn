@@ -49,6 +49,15 @@
             padding-left: 10px !important;
             padding-right: 10px !important;
         }
+        .bootstrap-select{
+            padding:0 !important;
+        }
+        .bs-placeholder{
+            display: none;
+        }
+        .bootstrap-select .dropdown-toggle{
+            display: none !important;
+        }
 
     </style>
 </head>
@@ -173,6 +182,11 @@
             </a></li>
             <li><a href="/org-details-page-content/"><i class="zmdi zmdi-chart-donut col-amber"></i><span>Organization Details Page</span>
             </a></li>
+            <li><a href="/partner-types/"><i class="zmdi zmdi-chart-donut col-amber"></i><span>Partner Type</span>
+            </a></li>
+            <li><a href="/partners/"><i class="zmdi zmdi-chart-donut col-amber"></i><span>Partners</span>
+            </a></li>
+
             {% if request.user.is_superuser %}
                 <li class="header">USER MANAGEMENT</li>
                 {#            <li><a href="javascript:void(0);"><i class="zmdi zmdi-accounts col-red"></i><span>User Group</span> </a>#}

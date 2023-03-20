@@ -13,4 +13,8 @@ urlpatterns = [
     path('create-landing-page-content/', LandingPageContentCreateView.as_view()),
     path('landing-page-content-details/<pk>/', LandingPageContentDetailsView.as_view()),
     path('user-details/<username>/', UserDetailView.as_view()),
+
+    path('dropdown-items/', DropdownItemView.as_view()),
+    path('data-entry/', DataEntryView.as_view()),
+
 ]

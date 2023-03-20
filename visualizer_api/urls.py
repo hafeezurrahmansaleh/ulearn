@@ -11,5 +11,6 @@ urlpatterns = [
     path('target-demographic-list/', TargetDemographicListView.as_view()),
     path('thematic-area-list/', ThematicAreaListView.as_view()),
     path('landing-page-content/', LandingPageContentView.as_view()),
+    path('partners/', PartnerListView.as_view()),
     path('export-to-csv/',ExportCSVStudents.as_view()),
 ]

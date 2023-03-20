@@ -166,4 +166,9 @@ class CleanDataAdmin(admin.ModelAdmin):
                      'org_targetdemographic' ]
 
 
+
+
 admin.site.register(DumpSettlements)
+admin.site.register(PartnerLogo)
+admin.site.register(TargetCommunity)
+admin.site.register(PartnerType)

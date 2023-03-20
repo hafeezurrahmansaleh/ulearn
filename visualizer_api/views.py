@@ -78,7 +78,7 @@ class CleanDataListView(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
-        dump_list = CleanData.objects.all()
+        dump_list = CleanData.objects.filter(data_status='Active')
         return dump_list
 
 
@@ -515,4 +515,21 @@ class LandingPageContentView(APIView):
     def get(self, request):
         dump_list = LandingPageContent.objects.all().first()
         serializer = LandingPageContentSerializer(dump_list, many=False, context={"request": request})
+        return Response(serializer.data)
+
+
+class PartnerListView(APIView):
+    """
+       endpoint for retrieving the list of technical areas
+    """
+
+    # permission_classes = (IsAuthenticated,)
+    # serializer_class = LandingPageContentSerializer
+
+    # --queryset = Dump.objects.all()
+    # pagination_class = LimitOffsetPagination
+
+    def get(self, request):
+        dump_list = PartnerLogo.objects.all()
+        serializer = PartnerListSerializer(dump_list, many=True, context={"request": request})
         return Response(serializer.data)

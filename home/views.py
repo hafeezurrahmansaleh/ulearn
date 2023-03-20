@@ -1065,3 +1065,96 @@ def import_excel(request):
             return redirect('/import-excel/')
 # return redirect('/')
 # return render(request, 'exceldata.html', {"excel_data": excel_data})
+
+
+
+
+class PartnerListView(View):
+    def get(self, request):
+        data = PartnerLogo.objects.all()
+        context = {
+            'data': data
+        }
+        return render(request, 'partner.html', context)
+
+
+class PartnerTypeListView(View):
+    def get(self, request):
+        data = PartnerType.objects.all()
+        context = {
+            'data': data
+        }
+        return render(request, 'partner_types.html', context)
+
+
+class PartnerCreateView(View):
+    def get(self, request):
+        partner_type = PartnerType.objects.all()
+        context = {
+            'partner_type': partner_type,
+        }
+        return render(request, 'partner_create.html', context)
+
+    def post(self, request):
+        if request.method == 'POST':
+            logo_img = self.request.FILES['logo_img']
+            type = self.request.POST.get('type')
+            title = self.request.POST.get('title')
+            if type:
+                type_ins = PartnerType.objects.get(id=type)
+            else:
+                type_ins = None
+            try:
+                PartnerLogo.objects.create(
+                    logo_img=logo_img,
+                    type=type_ins,
+                    title=title
+                )
+                messages.success(request, 'Partner has been created successfully!')
+            except Exception as e:
+                print(e)
+                messages.error(request, 'Failed to create partner!')
+                return redirect('/create-partner/')
+        return redirect('/partners/')
+
+
+class PartnerDetailsView(View):
+    def get(self, request, id):
+        data = PartnerLogo.objects.get(id=id)
+        partner_type = PartnerType.objects.all()
+        context = {
+            'data': data,
+            'partner_type': partner_type,
+        }
+        return render(request, 'partner_details.html', context)
+
+    def post(self, request, id):
+        if request.method == 'POST':
+            try:
+                logo_img = self.request.FILES['logo_img']
+            except:
+                logo_img = None
+            type = self.request.POST.get('type')
+            title = self.request.POST.get('title')
+            q = PartnerLogo.objects.filter(id=id)
+            if q.exists():
+                try:
+                    q_instance = q.first()
+                    if logo_img:
+                        if q_instance.logo_img:
+                            image_path = q_instance.logo_img.path
+                            if os.path.exists(image_path):
+                                os.remove(image_path)
+                        q_instance.logo_img = logo_img
+                    if type:
+                        q_instance.type = (PartnerType.objects.get(id=type))
+                    q_instance.title = title
+                    q_instance.save()
+                    messages.success(request, 'Partner details has been updated successfully!')
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'Failed to update partner details!')
+                    return redirect('/partner-details/'+id+'/')
+            else:
+                messages.error(request, "Partner doesn't exists!")
+        return redirect('/partners/')

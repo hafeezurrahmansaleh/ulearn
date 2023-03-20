@@ -114,6 +114,8 @@ class CleanDataSerializer(serializers.ModelSerializer):
             'contact_phone',
             'contact_email',
             'org_settlements',
+            'latitude',
+            'longitude',
         )
         # fields = '__all__'
         read_only_fields = (
@@ -146,3 +148,21 @@ class LandingPageContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandingPageContent
         fields = '__all__'
+
+
+class PartnerListSerializer(serializers.ModelSerializer):
+    logo_img = serializers.SerializerMethodField()
+    # type = serializers.CharField(
+    #     source="type.type",
+    #     read_only=True
+    # )
+
+    def get_logo_img(self, obj):
+        request = self.context.get('request')
+        photo_url = obj.logo_img.url
+        return request.build_absolute_uri(photo_url)
+
+    class Meta:
+        model = PartnerLogo
+        fields = '__all__'
+        depth = 1
