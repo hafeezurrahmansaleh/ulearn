@@ -27,6 +27,8 @@ urlpatterns = [
     path('raw-data/', login_required(RawDataView.as_view())),
 
     path('partner-types/', login_required(PartnerTypeListView.as_view())),
+    path('partner-type-details/<id>/', login_required(PartnerTypeDetailsView.as_view())),
+    path('create-partner-type/', login_required(PartnerTypeCreateView.as_view())),
     path('partners/', login_required(PartnerListView.as_view())),
     path('create-partner/', login_required(PartnerCreateView.as_view())),
     path('partner-details/<id>/', login_required(PartnerDetailsView.as_view())),

@@ -1087,6 +1087,55 @@ class PartnerTypeListView(View):
         return render(request, 'partner_types.html', context)
 
 
+class PartnerTypeCreateView(View):
+    def get(self, request):
+        return render(request, 'partner_type_create.html')
+
+    def post(self, request):
+        if request.method == 'POST':
+            type = self.request.POST.get('type')
+            title = self.request.POST.get('title')
+            description = self.request.POST.get('description')
+            try:
+                PartnerType.objects.create(
+                    type=type,
+                    title=title,
+                    description=description
+                )
+                messages.success(request, 'Partner type has been created successfully!')
+            except Exception as e:
+                print(e)
+                messages.error(request, 'Failed to create partner type!')
+                return redirect('/create-partner-type/')
+        return redirect('/partner-types/')
+
+
+class PartnerTypeDetailsView(View):
+    def get(self, request, id):
+        data = PartnerType.objects.get(id=id)
+        context = {
+            'data': data
+        }
+        return render(request, 'partner_type_details.html',context)
+
+    def post(self, request, id):
+        if request.method == 'POST':
+            type = self.request.POST.get('type')
+            title = self.request.POST.get('title')
+            description = self.request.POST.get('description')
+            try:
+                PartnerType.objects.filter(id=id).update(
+                    type=type,
+                    title=title,
+                    description=description
+                )
+                messages.success(request, 'Partner type has been updated successfully!')
+            except Exception as e:
+                print(e)
+                messages.error(request, 'Failed to update partner type!')
+                return redirect('/partner-type-details/'+id+'/')
+        return redirect('/partner-types/')
+
 class PartnerCreateView(View):
     def get(self, request):
         partner_type = PartnerType.objects.all()

@@ -16,5 +16,9 @@ urlpatterns = [
 
     path('dropdown-items/', DropdownItemView.as_view()),
     path('data-entry/', DataEntryView.as_view()),
+    path('partner-type/', PartnerTypeListView.as_view()),
+    path('partner-type-details/<id>/', PartnerTypeDetailsView.as_view()),
+    path('partners/', PartnerListView.as_view()),
+    path('partner-details/<id>/', PartnerDetailsView.as_view()),
 
 ]

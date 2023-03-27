@@ -158,3 +158,41 @@ class DataEntryView(generics.ListCreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = DataEntrySerializer
     queryset = CleanData.objects.filter(data_source='Form Submission')
+
+
+class PartnerTypeListView(generics.ListCreateAPIView):
+    """
+       endpoint for creating the list of technical areas
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PartnerTypeSerializer
+    queryset = PartnerType.objects.all()
+
+
+class PartnerTypeDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """
+       endpoint for creating the list of technical areas
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PartnerTypeSerializer
+    lookup_field = 'id'
+    queryset = PartnerType.objects.all()
+
+
+class PartnerListView(generics.ListCreateAPIView):
+    """
+       endpoint for creating the list of technical areas
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PartnerSerializer
+    queryset = PartnerLogo.objects.all()
+
+
+class PartnerDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """
+       endpoint for creating the list of technical areas
+    """
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PartnerSerializer
+    lookup_field = 'id'
+    queryset = PartnerLogo.objects.all()

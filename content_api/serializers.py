@@ -2,7 +2,7 @@ from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
 from home.models import *
 from visualizer_api.serializers import SettlementOrgAssociationSerializer
-
+from drf_extra_fields.fields import Base64ImageField
 
 class ThematicAreaContentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,6 +53,20 @@ class LandingPageContentDetailsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PartnerTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PartnerType
+        fields = '__all__'
+
+
+class PartnerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PartnerLogo
+        fields = '__all__'
+
+
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = LandingPageContent
@@ -67,12 +81,14 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
 
 class SettlementOrgAssociationCreateSerializer(serializers.ModelSerializer):
-    settlement = serializers.PrimaryKeyRelatedField(
+    settlement = serializers.SlugRelatedField(
         many=False,
+        slug_field='value',
         queryset=Settlement.objects.all()
     )
-    primary_thematic_area = serializers.PrimaryKeyRelatedField(
+    primary_thematic_area = serializers.SlugRelatedField(
         many=True,
+        slug_field='value',
         required=False,
         queryset=ThematicArea.objects.all()
     )
@@ -94,17 +110,18 @@ class DataEntrySerializer(WritableNestedModelSerializer):
     org_type = serializers.SlugRelatedField(
         many=False,
         read_only=False,
-        slug_field='id',
+        slug_field='value',
         required=False,
         queryset=OrgType.objects.all()
     )
     org_targetdemographic = serializers.SlugRelatedField(
         many=True,
         read_only=False,
-        slug_field='id',
+        slug_field='value',
         required=False,
         queryset=TargetDemographic.objects.all()
     )
+    logo_img = Base64ImageField()  # From DRF Extra Fields
 
     class Meta:
         model = CleanData
@@ -113,6 +130,11 @@ class DataEntrySerializer(WritableNestedModelSerializer):
             'org_settlement': {'required': False, 'read_only': False, 'many': True,
                                'queryset': SettlementOrgAssociation.objects.all()},
         }
+
+        def create(self, validated_data):
+            logo_img = validated_data.pop('logo_img')
+            data = validated_data.pop('data')
+            return CleanData.objects.create(data=validated_data, logo_img=logo_img)
 
     # def create(self, validated_data):
     #     # print(validated_data)
