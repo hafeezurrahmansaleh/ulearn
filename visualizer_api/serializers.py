@@ -116,6 +116,7 @@ class CleanDataSerializer(serializers.ModelSerializer):
             'org_settlements',
             'latitude',
             'longitude',
+            'data_status'
         )
         # fields = '__all__'
         read_only_fields = (

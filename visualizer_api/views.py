@@ -1,8 +1,10 @@
 import json
 from collections import OrderedDict
+from io import StringIO
 
 from django.apps import apps
 from django.core import serializers as sz
+from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.http import JsonResponse
 # from knox.auth import TokenAuthentication
@@ -171,7 +173,7 @@ class FilterCleanDataView(generics.ListAPIView):
                 # else:
                 target_demographic_q = get_query(target_demographic, ['org_targetdemographic__value'])
                 queryset = queryset.filter(target_demographic_q)
-                    # print(target_demographic_q)
+                # print(target_demographic_q)
             else:
                 target_demographic = None
         except:
@@ -456,7 +458,7 @@ class ExportCSVStudents(APIView):
             'Org category',
             'Settlements in which org operates',
             'Thematic areas of work',
-            'Target groups',
+            'Target groups'
         ]
 
         settlements = Settlement.objects.all().distinct().order_by('value')
@@ -479,6 +481,145 @@ class ExportCSVStudents(APIView):
             ]
             writer.writerow(column_value_list)
         return response
+
+
+class SendCSVToEmail(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = CleanData.objects.all().distinct()
+        send_to = self.request.GET['send_to']
+        # print(self.request.GET['settlement'])
+        # print(self.request.data['settlement'])
+
+        try:
+            settlement = (self.request.GET['settlement']).split(",")
+
+            print('settlement: ')
+            if settlement:
+                settlement_q = get_query(settlement, ['associated_settlements'])
+                queryset = queryset.filter(settlement_q)
+                # print(settlement_q)
+            else:
+                settlement = None
+        except Exception as e:
+            settlement = None
+            print(e)
+        try:
+            thematic_area = self.request.GET['thematic_area_of_work'].split(",")
+            if thematic_area:
+                # if thematic_area == 'Other':
+                #     queryset = queryset.filter(org_settlement__primary_thematic_area__exclude_from_filter=True)
+                # else:
+                thematic_area_q = get_query(thematic_area, ['associated_thematic_areas'])
+                queryset = queryset.filter(thematic_area_q)
+                print(thematic_area_q)
+            else:
+                thematic_area = None
+        except:
+            thematic_area = None
+        try:
+            org_type = self.request.GET['type_of_org'].split(",")
+            if org_type:
+                if org_type[0] == 'Other':
+                    print('inside type other field')
+                    queryset = queryset.filter(org_type__exclude_from_filter=True)
+                else:
+                    org_type_q = get_query(org_type, ['org_type__value'])
+                    queryset = queryset.filter(org_type_q)
+            else:
+                org_type = None
+        except:
+            org_type = None
+        try:
+            target_demographic = self.request.GET['target_demographic'].split(",")
+            if target_demographic:
+                # if target_demographic == 'Other':
+                #     queryset = queryset.filter(org_targetdemographic__exclude_from_filter=True)
+                # else:
+                target_demographic_q = get_query(target_demographic, ['org_targetdemographic__value'])
+                queryset = queryset.filter(target_demographic_q)
+                # print(target_demographic_q)
+            else:
+                target_demographic = None
+        except:
+            target_demographic = None
+
+        # Search
+        print('search start')
+        if ('query' in self.request.GET) and self.request.GET['query'].strip():
+            query_string = self.request.GET.get('query')
+            print(query_string)
+            if query_string is not None and query_string != '':
+                query_string_list = list([query_string.strip()])
+                entry_query = get_query(query_string_list,
+                                        ['org_name', 'org_acronym', 'org_type__value',
+                                         'associated_settlements', 'associated_thematic_areas',
+                                         'org_targetgroup', 'org_targetdemographic__value'])
+
+                # print(queryset)
+                # print(entry_query)
+                queryset = queryset.filter(entry_query)
+                print(queryset)
+        queryset = queryset.filter(org_type__exclude_from_filter=False)
+        queryset = queryset.distinct()
+
+        ts = dt.datetime.now()
+        print(int(ts.timestamp()))
+        response = HttpResponse(content_type='text/csv')
+        filename = u"organization_list_" + ts.strftime("%Y%m%d%H%M%S") + ".csv"
+        response['Content-Disposition'] = u'attachment; filename="{0}"'.format(filename)
+        csv_buffer = StringIO()
+        writer = csv.writer(
+            csv_buffer,
+            delimiter=',',
+            quotechar='"',
+            quoting=csv.QUOTE_ALL
+        )
+        column_list = [
+            'Org name',
+            'Org acronym',
+            'Org mail address',
+            'Org phone number',
+            'Org website',
+            'Year founded',
+            'Org primary contact',
+            'Org primary contact mail address',
+            'Org category',
+            'Settlements in which org operates',
+            'Thematic areas of work',
+            'Target groups'
+        ]
+
+        settlements = Settlement.objects.all().distinct().order_by('value')
+        # print(column_list)
+        writer.writerow(column_list)
+        for f in queryset:
+            column_value_list = [
+                f.org_name,
+                f.org_acronym,
+                f.org_email,
+                f.org_phone,
+                f.org_website,
+                f.founding_year,
+                f.org_primarycontact,
+                f.contact_email,
+                f.org_type.value,
+                f.associated_settlements,
+                f.associated_thematic_areas,
+                f.org_targetgroup
+            ]
+            writer.writerow(column_value_list)
+        csv_data = csv_buffer.getvalue()
+        email = EmailMessage(
+            'Export organization data',
+            'Here is the CSV file you requested.',
+            'abu35-1746@diu.edu.bd',
+            [send_to],
+        )
+        email.attach(filename, csv_data, 'text/csv')
+        email.send()
+        return Response({'message': 'Email sent.'})
+
+        # return response
 
 
 # import csv

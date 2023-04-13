@@ -32,6 +32,8 @@ urlpatterns = [
     path('partners/', login_required(PartnerListView.as_view())),
     path('create-partner/', login_required(PartnerCreateView.as_view())),
     path('partner-details/<id>/', login_required(PartnerDetailsView.as_view())),
+    path('change-org-status/<id>/', login_required(ChangeOrgStatusView.as_view())),
+    path('download-excel-template/', login_required(download_excel_template)),
 ]
 
 

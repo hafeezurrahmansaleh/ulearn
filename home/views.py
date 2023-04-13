@@ -1,10 +1,11 @@
 import datetime
 import os
 import traceback
+from django.conf import settings
 
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect,Http404
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -145,6 +146,15 @@ def update_org_associated_field(org_obj):
     org_obj.save()
 
 
+class ChangeOrgStatusView(View):
+    def get(self, request, id):
+        org = CleanData.objects.get(id=id)
+        status = request.GET.get('status', org.data_status)
+        org.data_status = status
+        org.save()
+        return redirect('/org-details/' + id)
+
+
 class AddOrgView(View):
     def get(self, request):
         org_type = OrgType.objects.all()
@@ -185,6 +195,8 @@ class AddOrgView(View):
             org_target_demographic = request.POST.getlist('org_target_demographic')
             org_primary_technical_area_focus = request.POST.get('org_primary_technical_area_focus')
             contact_email = request.POST.get('contact_email')
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
             print(org_target_demographic)
 
             if founding_year.isnumeric():
@@ -213,6 +225,8 @@ class AddOrgView(View):
                         org_primary_technical_area_focus=org_primary_technical_area_focus,
                         org_targetgroup=org_target_community,
                         contact_email=contact_email,
+                        latitude=latitude,
+                        longitude=longitude
                     )
                     SettlementOrgAssociation.objects.filter(org=cdata[0]).delete()
                     cleandata_ins = cdata[0]
@@ -233,6 +247,8 @@ class AddOrgView(View):
                                               org_primary_technical_area_focus=org_primary_technical_area_focus,
                                               org_targetgroup=org_target_community,
                                               contact_email=contact_email,
+                                              latitude=latitude,
+                                              longitude=longitude
                                               )
                     cleandata_ins.save()
                 cleandata_ins.org_targetdemographic.set(org_target_demographic)
@@ -328,6 +344,8 @@ class OrgDetailsView(View):
             org_target_demographic = request.POST.getlist('org_target_demographic')
             org_primary_technical_area_focus = request.POST.get('org_primary_technical_area_focus')
             contact_email = request.POST.get('contact_email')
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
             print(org_target_demographic)
 
             if founding_year.isnumeric():
@@ -354,7 +372,9 @@ class OrgDetailsView(View):
                         org_legaltype=org_legal_type,
                         org_primary_technical_area_focus=org_primary_technical_area_focus,
                         org_targetgroup=org_target_community,
-                        contact_email=contact_email
+                        contact_email=contact_email,
+                        latitude=latitude,
+                        longitude=longitude,
                     )
                     SettlementOrgAssociation.objects.filter(org=cdata[0]).delete()
                     cleandata_ins = cdata[0]
@@ -784,12 +804,12 @@ def import_excel(request):
 
                     if org_type.strip() not in ('', 'None', 'Other', 'other', 'nan') and org_type is not None:
                         org_type_ins = \
-                        OrgType.objects.get_or_create(value=titlecase(org_type.strip().replace('_', ' ')),
-                                                      title=titlecase(org_type.strip().replace('_', ' ')),
-                                                      exclude_from_filter=False
-                                                      )[0]
+                            OrgType.objects.get_or_create(value=titlecase(org_type.strip().replace('_', ' ')),
+                                                          title=titlecase(org_type.strip().replace('_', ' ')),
+                                                          exclude_from_filter=False
+                                                          )[0]
                     elif org_type.strip() in (
-                    'Other', 'other') and org_type_other is not None and org_type_other not in (
+                            'Other', 'other') and org_type_other is not None and org_type_other not in (
                             '', 'None'):
                         org_type_ins = \
                             OrgType.objects.get_or_create(value=titlecase(org_type_other.strip().replace('_', ' ')),
@@ -808,7 +828,7 @@ def import_excel(request):
                                         value=titlecase(td.strip().replace('_', ' ')),
                                         title=titlecase(td.strip().replace('_', ' ')),
                                         exclude_from_filter=False
-                                        )[0].id
+                                    )[0].id
                                 )
                             # else:
                             #     target_demo_list.append(TargetDemographic.objects.get_or_create(
@@ -971,7 +991,7 @@ def import_excel(request):
                                                     value=titlecase(pta.replace('_', ' ')),
                                                     title=titlecase(pta.replace('_', ' ')),
                                                     exclude_from_filter=False
-                                                    )[0].id)
+                                                )[0].id)
                                 except:
                                     l_primary_thematic_areas = None
                                 # print(l_primary_thematic_areas)
@@ -1063,10 +1083,10 @@ def import_excel(request):
         except:
             messages.error(request, 'Failed to import file!')
             return redirect('/import-excel/')
+
+
 # return redirect('/')
 # return render(request, 'exceldata.html', {"excel_data": excel_data})
-
-
 
 
 class PartnerListView(View):
@@ -1116,7 +1136,7 @@ class PartnerTypeDetailsView(View):
         context = {
             'data': data
         }
-        return render(request, 'partner_type_details.html',context)
+        return render(request, 'partner_type_details.html', context)
 
     def post(self, request, id):
         if request.method == 'POST':
@@ -1133,8 +1153,9 @@ class PartnerTypeDetailsView(View):
             except Exception as e:
                 print(e)
                 messages.error(request, 'Failed to update partner type!')
-                return redirect('/partner-type-details/'+id+'/')
+                return redirect('/partner-type-details/' + id + '/')
         return redirect('/partner-types/')
+
 
 class PartnerCreateView(View):
     def get(self, request):
@@ -1203,7 +1224,17 @@ class PartnerDetailsView(View):
                 except Exception as e:
                     print(e)
                     messages.error(request, 'Failed to update partner details!')
-                    return redirect('/partner-details/'+id+'/')
+                    return redirect('/partner-details/' + id + '/')
             else:
                 messages.error(request, "Partner doesn't exists!")
         return redirect('/partners/')
+
+
+def download_excel_template(request):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'Settlement-Level_Actor_Mapping_template.xlsx')
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404

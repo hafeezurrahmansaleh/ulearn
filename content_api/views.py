@@ -159,6 +159,19 @@ class DataEntryView(generics.ListCreateAPIView):
     serializer_class = DataEntrySerializer
     queryset = CleanData.objects.filter(data_source='Form Submission')
 
+    def create(self, request, *args, **kwargs):
+        target_demographics = request.data.pop('org_targetdemographic', [])
+        org_type = request.data.pop('org_type', '')
+        target_demographic_instances = []
+        for t in target_demographics:
+            instance, created = TargetDemographic.objects.get_or_create(value=t, defaults={'title': t, 'exclude_from_filter': True})
+            target_demographic_instances.append(instance)
+
+        ot_instance, created = OrgType.objects.get_or_create(value=org_type,
+                                                                    defaults={'title': org_type, 'exclude_from_filter': True})
+        request.data['org_targetdemographic'] = [instance.value for instance in target_demographic_instances]
+        request.data['org_type'] = ot_instance.value
+        return super().create(request, *args, **kwargs)
 
 class PartnerTypeListView(generics.ListCreateAPIView):
     """

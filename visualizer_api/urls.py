@@ -13,4 +13,5 @@ urlpatterns = [
     path('landing-page-content/', LandingPageContentView.as_view()),
     path('partners/', PartnerListView.as_view()),
     path('export-to-csv/',ExportCSVStudents.as_view()),
+    path('send-csv-to-email/',SendCSVToEmail.as_view()),
 ]

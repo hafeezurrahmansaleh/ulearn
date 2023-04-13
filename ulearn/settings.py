@@ -59,10 +59,11 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'https://dashboard.ulearn-uganda.org',
-    'http://localhost:4200',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'https://dashboard.ulearn-uganda.org',
+#     'http://localhost:4200',
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'ulearn.urls'
 
@@ -154,3 +155,16 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#   Config for sending emails
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'abu35-1746@diu.edu.bd'
+EMAIL_HOST_PASSWORD = '01912189935'
+DEFAULT_FROM_EMAIL = 'abu35-1746@diu.edu.bd'
+SERVER_EMAIL = 'abu35-1746@diu.edu.bd'

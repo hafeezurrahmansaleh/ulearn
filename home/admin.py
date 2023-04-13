@@ -4,7 +4,7 @@ from .models import *
 # Register your models here.
 
 
-admin.site.site_header = "U-Learn Data Visualization Administration"
+admin.site.site_header = "CAPAIDS Data Visualization Administration"
 
 
 @admin.register(OrgType)

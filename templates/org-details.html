@@ -48,38 +48,59 @@
                     <div class="card">
                         <div class="header">
                             <h2>ORGANIZATION DETAILS</h2>
+                            <div class="align-right">
+                                <span>Status: </span>
+                                {% if org.data_status == 'Active' %}
+                                    <span class="mr-2" style="color:green">{{ org.data_status }}</span>
+                                    <span><a class="btn-danger btn-sm" href="/change-org-status/{{ org.id }}/?status=Inactive">Deactivate</a></span>
+                                {% else %}
+                                    <span class="mr-2" style="color:red">{{ org.data_status }}</span>
+                                    <span><a class="btn-success btn-sm" href="/change-org-status/{{ org.id }}/?status=Active">Approve</a></span>
+                                {% endif %}
+
+                            </div>
                         </div>
                         <div class="body">
                             <form id="wizard_with_validation" method="POST" enctype="multipart/form-data" action="/org-details/{{ org.id }}/">{% csrf_token %}
                                 <h3>Organization Details</h3>
                                 <fieldset>
-                                    <label class="form-label">Organization Full Name*</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" placeholder="Organization Name" class="form-control" name="org_name" value="{{ org.org_name }}" required>
+                                <div class="form-group">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Organization Full Name*</label>
+                                                <div class="form-line">
+                                                    <input type="text" placeholder="Organization Name" class="form-control" name="org_name" value="{{ org.org_name }}" required>
+                                                </div>
                                         </div>
-                                    </div>
 
-                                    <label class="form-label">Organization Acronym*</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="org_acronym" value="{{ org.org_acronym }}" required>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Organization Acronym*</label>
+                                                <div class="form-line">
+                                                    <input type="text" class="form-control" name="org_acronym" value="{{ org.org_acronym }}" required>
+                                                </div>
                                         </div>
                                     </div>
-
-                                    <label class="form-label">Founding Year</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="founding_year" value="{{ org.founding_year }}">
+                                </div>
+                                <div class="form-group">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Organization Type</label>
+                                            <select class="form-control" name="org_type" required>
+                                                {% for o in org_type %}
+                                                    {% if org.org_type.id == o.id %}
+                                                        <option value="{{ o.id }}" selected>{{ o.value }}</option>
+                                                    {% else %}
+                                                        <option value="{{ o.id }}">{{ o.value }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
                                         </div>
-                                    </div>
-                                    <label class="form-label">Target Community</label>
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <select class="form-control" name="org_target_community">
-                                                <option value="">---- SELECT TARGET COMMUNITY ----</option>
-                                                {% for o in target_group %}
-                                                    {% if org.org_targetgroup == target_group %}
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Organization Legal Type</label>
+                                            <select class="form-control" name="org_legaltype">
+                                                <option value=""> -- Select Org Legal Type --</option>
+                                                {% for o in org_legal_type %}
+                                                    {% if org.org_legaltype == o %}
                                                         <option value="{{ o }}" selected>{{ o }}</option>
                                                     {% else %}
                                                         <option value="{{ o }}">{{ o }}</option>
@@ -88,38 +109,58 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <div class="body">
-                                            <div class="row clearfix">
-                                                <div class="col-sm-6">
-                                                    <label class="form-label">Organization Type</label>
-                                                    <select class="form-control" name="org_type" required>
-                                                        {% for o in org_type %}
-                                                            {% if org.org_type.id == o.id %}
-                                                                <option value="{{ o.id }}" selected>{{ o.value }}</option>
-                                                            {% else %}
-                                                                <option value="{{ o.id }}">{{ o.value }}</option>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label class="form-label">Organization Legal Type</label>
-                                                    <select class="form-control" name="org_legaltype">
-                                                        <option value=""> -- Select Org Legal Type --</option>
-                                                        {% for o in org_legal_type %}
-                                                            {% if org.org_legaltype == o %}
+                                </div>
+                                <div class="form-group">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Target Community</label>
+                                                    <select class="form-control" name="org_target_community">
+                                                        <option value="">---- SELECT TARGET COMMUNITY ----</option>
+                                                        {% for o in target_group %}
+                                                            {% if org.org_targetgroup == target_group %}
                                                                 <option value="{{ o }}" selected>{{ o }}</option>
                                                             {% else %}
                                                                 <option value="{{ o }}">{{ o }}</option>
                                                             {% endif %}
                                                         {% endfor %}
                                                     </select>
-                                                </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Founding Year</label>
+                                                    <input type="text" class="form-control" name="founding_year" value="{{ org.founding_year }}">
                                             </div>
+                                    </div>
+                                </div>
+
+                                 <div class="form-group">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Location (Latitude)</label>
+                                                <div class="form-line">
+                                                {% if org.longitude %}
+                                                        <input type="text" class="form-control" name="latitude" value="{{ org.latitude }}">
+                                                    {% else %}
+                                                        <input type="text" class="form-control" name="latitude" >
+                                                    {% endif %}
+
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Location (Longitude)</label>
+                                                <div class="form-line">
+                                                    {% if org.longitude %}
+                                                        <input type="text" class="form-control" name="longitude" value="{{ org.longitude }}">
+                                                    {% else %}
+                                                        <input type="text" class="form-control" name="longitude" >
+                                                    {% endif %}
+                                                </div>
                                         </div>
                                     </div>
+                                </div>
+
+
+
+
                                     <div class="form-group" style="min-height: 150px !important;">
                                         <div class="body">
                                             <div class="row clearfix">
