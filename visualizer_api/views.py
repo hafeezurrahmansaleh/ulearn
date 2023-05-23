@@ -611,8 +611,8 @@ class SendCSVToEmail(APIView):
         csv_data = csv_buffer.getvalue()
         email = EmailMessage(
             'Export organization data',
-            'Here is the CSV file you requested.',
-            'abu35-1746@diu.edu.bd',
+            'Hello! Thank you for engaging with the Settlement-level Actor Mapping visual tool. Our intention is to provide you with valuable information that facilitates enhanced collaboration, partnerships, and networking opportunities with other relevant actors. Kindly find the requested information in the attached Excel sheet. Should you have any inquiries, please do not hesitate to contact us.',
+            'slam@ulearn-uganda.org',
             [send_to],
         )
         email.attach(filename, csv_data, 'text/csv')

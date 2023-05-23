@@ -160,11 +160,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #   Config for sending emails
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'abu35-1746@diu.edu.bd'
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = 'abu35-1746@diu.edu.bd'
-SERVER_EMAIL = 'abu35-1746@diu.edu.bd'
+EMAIL_HOST_USER = 'slam@ulearn-uganda.org'
+EMAIL_HOST_PASSWORD = 'Uganda_2022'
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL = 'slam@ulearn-uganda.org'
